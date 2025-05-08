@@ -1,0 +1,11 @@
+<nav class="nav-bar">
+    <div class="left-link">
+        <!-- <a>Home</a>
+        <a>Products</a> -->
+    </div>
+
+    <div class="right-link">
+        <a [routerLink]="'/login/'" *ngIf="!isLoggedIn">Log In</a>
+      <a [routerLink]="'/login/sign-up'">Sign Up</a>
+    </div>
+</nav>

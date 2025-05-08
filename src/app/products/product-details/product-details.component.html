@@ -1,0 +1,22 @@
+<div class="product-details-container">
+    <button class="back-button" (click)="navigateDashboard()">← Back to Dashboard</button>
+
+    <div>
+      <div>
+        <h2 class="text-center mb-4"> Scrap Detail</h2>
+
+        @if(fetchFileType()=='image'){
+          <img [src]="productObj?.imageUrl" alt="Product" class="product-image" />
+        }
+        @else if(fetchFileType()=='document'){
+          <iframe [src]="bypasssSecurityUrl()" title="doc" attribute="File" width="100%" height="500px"></iframe>
+        }
+      </div>
+      <h2>Product Name : {{productObj?.productName}}</h2>
+      <p><strong>Category:</strong> Category Name : {{productObj?.categoryValues?.category}}</p>
+      <p><strong>Description:</strong> {{productObj?.description}}.</p>
+      <p><strong>Price:</strong>  {{productObj?.price}}</p>
+    </div>
+    <button class="btn btn-success" (click)="navigateToBuyProduct()">Add to Cart</button>
+  </div>
+  

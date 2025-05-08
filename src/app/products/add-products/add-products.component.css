@@ -1,0 +1,13 @@
+.container {
+    max-width: 500px;
+    margin: auto;
+  }
+  
+  .card {
+    border-radius: 10px;
+  }
+  
+  .btn {
+    margin-top: 10px;
+  }
+  

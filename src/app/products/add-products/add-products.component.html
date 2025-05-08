@@ -1,0 +1,80 @@
+<div class="container mt-4">
+    <div class="card p-4 shadow-sm">
+      <h2 class="text-center mb-3">Add New Product</h2>
+  
+      <form [formGroup]="addProductForm" (ngSubmit)="onSubmit()">
+        
+        <!-- Product Name -->
+        <div class="mb-3">
+          <label class="form-label">Product Name</label>
+          <input type="text" class="form-control" placeholder="Enter product name" formControlName="productName">
+        </div>
+  
+        <!-- Price -->
+        <div class="mb-3">
+          <label class="form-label">Price</label>
+          <input type="number" class="form-control" placeholder="Enter price"  formControlName="price">
+        </div>
+  
+        <!-- Category Dropdown -->
+        @if (category.length > 0){
+            <div class="mb-3">
+                <label class="form-label">Category</label>
+                <select class="form-select" formControlName="categoryValues">
+                <option [value]="null" selected>Please Select</option>
+
+                  @for(item of category;track item._id){
+                    <option [value]="item._id">{{item?.category}}</option>
+                  }
+                </select>
+              </div>
+        }
+       @else{
+            <button type="button"  class="btn btn-primary ms-2 mb-4 ml-4" (click)="openCategoryModal()">
+                Add Category
+              </button>
+        }
+     
+  
+        <!-- Description -->
+        <div class="mb-3">
+          <label class="form-label">Description</label>
+          <textarea class="form-control" placeholder="Enter product description" formControlName="description"></textarea>
+        </div>
+  
+        <!-- File Upload -->
+        <div class="mb-3">
+          <label class="form-label">Upload Product Image</label>
+          <input type="file" class="form-control" formControlName="image" (change)="uploadFile($event)">
+        </div>
+  
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary w-100">
+          Submit
+        </button>
+  
+      </form>
+    </div>
+  </div>
+  <ng-template #categoryModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title">Add Category</h5>
+      <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="categoryForm">
+        <div class="mb-3">
+          <label class="form-label">Category Name</label>
+          <input type="text" class="form-control" formControlName="category" placeholder="Enter category name">
+          <span class="text-danger" *ngIf="categoryForm.get('category')?.touched || categoryForm.get('category')?.dirty">
+            <span *ngIf="categoryForm.get('category')?.errors?.['required']">Please enter category</span>
+
+          </span>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+      <button class="btn btn-success" (click)="addCategory()">Add</button>
+    </div>
+  </ng-template>

@@ -1,0 +1,148 @@
+<div class="container mt-4">
+  <h2 class="text-center mb-4">Product Dashboard</h2>
+
+  <!-- Controls -->
+  <div class="row align-items-center mb-3">
+    <div class="col-md-6" [formGroup]="searchForm">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Search products..."
+        formControlName="searchController"
+        (input)="checkKeyWord()"
+      />
+    </div>
+    <div class="col-md-6 text-md-end mt-2 mt-md-0">
+      <button (click)="navigateToProduct()" class="btn btn-primary">
+        Add Product
+      </button>
+    </div>
+  </div>
+
+  <!-- Table Wrapper for Responsive Design -->
+  <div class="table-responsive shadow rounded">
+    <table class="table table-bordered table-hover">
+      <thead class="table-primary text-center">
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Price (INR)</th>
+          <th>Category</th>
+          <th>Image</th>
+          <th>Description</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngIf="!isSearchAdded" >
+        @if(product$  | async; as products) {
+          @if (products.updatedProduct.length > 0) {
+          @for(product of products.updatedProduct; track product._id; let i = $index) {       
+            <tr>
+              <td class="text-center">{{ i + 1 }}</td>
+              <td>
+                <a
+                  [routerLink]="['/products/product-detail', product._id]"
+                  class="text-primary fw-bold text-decoration-none"
+                >
+                  {{ product?.productName }}
+                </a>
+              </td>
+              <td class="text-center">{{ product?.price | currency: 'INR' : true  }}</td>
+              <td class="text-center">{{ product?.categoryValues?.category }}</td>
+
+              @if(fetchFileType(i) | async; as fileType) {
+                <td class="text-center">
+                  <ng-container *ngIf="fileType == 'image'; else documentView">
+                    <img
+                      [src]="product?.imageUrl"
+                      alt="File Preview"
+                      class="img-fluid rounded shadow-sm"
+                      style="max-width: 80px; max-height: 80px;"
+                    />
+                  </ng-container>
+                  <ng-template #documentView>
+                    <iframe
+                      title="file"
+                      [src]="bypassSecurity(product.imageUrl)"
+                      class="rounded shadow-sm"
+                      style="width: 120px; height: 80px;"
+                    ></iframe>
+                  </ng-template>
+                </td>
+              }
+              <td>{{ product?.description }}</td>
+              <td><button class="btn btn-primary" [routerLink]="['/products/buy-product',product._id]">Buy</button></td>
+            </tr>
+            }  
+          }
+          @else {
+            <tr>
+            <td colspan="7"> <p class="text-center">No records found</p></td>
+            </tr>
+          }
+        }
+        @else {
+          <tr>
+            <td colspan="6" class="text-center py-3">Loading...</td>
+          </tr>
+        }
+      </ng-container>
+      <ng-container *ngIf="isSearchAdded" >
+        @if(productType$  | async; as prod) {
+          @if (prod.length > 0) {
+          @for(product of prod; track product._id; let i = $index) {
+            <tr>
+              <td class="text-center">{{ i + 1 }}</td>
+              <td>
+                <a
+                  [routerLink]="['/products/product-detail', product._id]"
+                  class="text-primary fw-bold text-decoration-none"
+                >
+                  {{ product?.productName }}
+                </a>
+              </td>
+              <td class="text-center">{{ product?.price | currency: 'INR' : true  }}</td>
+              <td class="text-center">{{ product?.categoryValues?.category }}</td>
+
+              @if(fetchFileTypeForSearch(prod,i) | async; as fileType) {
+                <td class="text-center">
+                  <ng-container *ngIf="fileType == 'image'; else documentView">
+                    <img
+                      [src]="product?.imageUrl"
+                      alt="File Preview"
+                      class="img-fluid rounded shadow-sm"
+                      style="max-width: 80px; max-height: 80px;"
+                    />
+                  </ng-container>
+                  <ng-template #documentView>
+                    <iframe
+                      title="file"
+                      [src]="bypassSecurity(product.imageUrl)"
+                      class="rounded shadow-sm"
+                      style="width: 120px; height: 80px;"
+                    ></iframe>
+                  </ng-template>
+                </td>
+              }
+              <td>{{ product?.description }}</td>
+              <td><button class="btn btn-primary">Buy</button></td>
+            </tr>
+          }
+        }
+        @else {
+          <tr>
+            <td colspan="6" class="text-center py-3">No record found</td>
+          </tr>
+        }
+        }
+        @else {
+          <tr>
+            <td colspan="6" class="text-center py-3">Loading...</td>
+          </tr>
+        }
+      </ng-container>
+      </tbody>
+    </table>
+  </div>
+</div>

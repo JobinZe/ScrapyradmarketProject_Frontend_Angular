@@ -1,0 +1,59 @@
+
+<div class="d-flex justify-content-center align-items-center vh-100">
+   <div style="max-width:400px;width: 100%;">
+    <ngb-alert *ngIf="showAlert" [type]="msgType" (closed)="!showAlert">{{message}}</ngb-alert>
+    <h2 class="text text-center mb-4">User Registration</h2>
+        <form [formGroup]="userRegForm" class="d-flex flex-column gap-3" >
+          <div class="form-group">
+            <label for="exampleFormControlInput1">Email</label>
+            <input type="email" class="form-control" formControlName="email" >
+            <span class="text-danger" *ngIf="userRegForm.get('email')?.touched || userRegForm.get('email')?.dirty">
+            <span *ngIf="userRegForm.get('email')?.errors?.['required'] ">Please enter Email</span>
+            </span>
+          </div>
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Username</label>
+              <input type="email" class="form-control" formControlName="userName" >
+              <span class="text-danger" *ngIf="userRegForm.get('userName')?.touched || userRegForm.get('userName')?.dirty">
+              <span *ngIf="userRegForm.get('userName')?.errors?.['required'] ">Please enter Username</span>
+              </span>
+            </div>
+            <div class="form-group">
+              <label for="">
+                <span>Gender</span>
+              </label>
+              <select class="form-select" formControlName="gender" >
+                <option value="">Please select</option>
+                <option value="0">Male</option>
+                <option value="0">Female</option>
+
+              </select>
+              <span class="text-danger" *ngIf="userRegForm.get('gender')?.touched || userRegForm.get('gender')?.dirty">
+                <span *ngIf="userRegForm.get('gender')?.errors?.['required'] ">Please select gender</span>
+                </span>
+            </div>
+            <div class="form-group">
+              <label for="exampleFormControlSelect2">Please select your type</label>
+              <select  class="form-select" id="exampleFormControlSelect2" formControlName="gamingSkill" >
+                <option value="">Please select</option>
+                <option [value]="1">Buyer</option>
+                <option [value]="2">Seller</option>
+               
+              </select>
+              <span class="text-danger" *ngIf="userRegForm.get('gamingSkill')?.touched || userRegForm.get('gamingSkill')?.dirty">
+                <span *ngIf="userRegForm.get('gamingSkill')?.errors?.['required'] ">Please select your type</span>
+                </span>
+            </div>
+            <div class="form-group">
+              <label for="exampleFormControlTextarea1">Password</label>
+              <input type="password" class="form-control" formControlName="password" (input)="checkField()">
+              <span class="text-danger" *ngIf="userRegForm.get('password')?.touched || userRegForm.get('password')?.dirty">
+                <span *ngIf="userRegForm.get('password')?.errors?.['required']">Please enter password</span>
+              
+                <span *ngIf="userRegForm.get('password')?.errors?.['minlength']">Allow minimum 5 characters </span>  
+                </span>
+            </div>
+          </form>
+          <button type="submit" class="btn btn-primary mt-3" (click)="signUp()"> Submit </button>
+        </div>
+</div>

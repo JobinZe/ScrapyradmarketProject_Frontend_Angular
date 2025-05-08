@@ -1,0 +1,24 @@
+<div class="container mt-5">
+    <h2 class="text-center mb-4">🛒 Cart Page</h2>
+    <div class="d-flex justify-content-end mb-3">
+      <button class="btn btn-primary" (click)="navigateToProductDetail()">← Go to product detail</button>
+    </div>
+  
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <div class="card shadow-sm">
+          <img [src]="'assets/no-image.png'" class="card-img-top" alt="Scrap Image" style="object-fit: cover; height: 200px;">
+          <div class="card-body">
+            <h5 class="card-title">{{  'No Title' }}</h5>
+            <p class="card-text"><strong>Location:</strong> {{  'N/A' }}</p>
+            <p class="card-text"><strong>Price:</strong> ₹{{ '0' }}</p>
+            <p class="card-text"><strong>Seller:</strong> {{ 'Unknown' }}</p>
+          </div>
+          <div class="card-footer text-center">
+            <button class="btn btn-outline-primary" >Proceed to buy</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

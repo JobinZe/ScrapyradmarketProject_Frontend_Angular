@@ -1,0 +1,28 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ProductRoutingModule } from './product-routing.module';
+import { RouterModule } from '@angular/router';
+import { AddProductsComponent } from './add-products/add-products.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { BuyProductComponent } from './buy-product/buy-product.component';
+
+
+@NgModule({
+  declarations: [
+    AddProductsComponent,
+    DashboardComponent,
+    BuyProductComponent
+  ],
+  imports: [
+    RouterModule,
+    ProductRoutingModule,
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule
+  ],
+  exports:[
+    ProductRoutingModule
+  ]
+})
+export class ProductsModule { }

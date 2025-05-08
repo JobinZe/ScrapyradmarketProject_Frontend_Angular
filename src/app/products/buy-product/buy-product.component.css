@@ -1,0 +1,13 @@
+.card {
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  
+  .card-img-top {
+    border-bottom: 1px solid #eee;
+  }
+  
+  .card-footer {
+    background-color: #f8f9fa;
+  }
+  

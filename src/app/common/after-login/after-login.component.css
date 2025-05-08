@@ -1,0 +1,27 @@
+.nav-bar{
+    background-color: black;
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+    padding: 0 20px;
+    cursor: pointer;
+}
+.nav-bar a{
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+    padding: 10px;
+    transition:color 0.3s ease;
+}
+.nav-bar a:hover{
+    color:  #f1f1f1;
+}
+.nav-bar a:active {
+    color: #ff6347; /* Active link color (e.g., tomato) */
+}
+/* .nav-bar .left-link{
+    display: flex;
+    margin-right: auto;
+} */
