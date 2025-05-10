@@ -1,4 +1,71 @@
-<div class="container mt-5">
+<div class="cart-container">
+  <div class="cart-header">
+    <h1>Your Shopping Cart</h1>
+    <p *ngIf="cartItems.length > 0">{{cartItems.length}} items in your cart</p>
+    <p *ngIf="cartItems.length === 0">Your cart is empty</p>
+  </div>
+
+  <div class="cart-content">
+    <!-- Cart Items List -->
+    <div class="cart-items" *ngIf="cartItems.length > 0">
+      <div class="cart-item" *ngFor="let item of cartItems">
+        <div class="item-image">
+          <img [src]="item.image" [alt]="item.name">
+        </div>
+        <div class="item-details">
+          <h3>{{item.name}}</h3>
+          <p class="item-description">{{item.description}}</p>
+          <div class="item-actions">
+            <div class="quantity-selector">
+              <button (click)="decreaseQuantity(item)">-</button>
+              <span>{{item.quantity}}</span>
+              <button (click)="increaseQuantity(item)">+</button>
+            </div>
+            <button class="remove-btn" (click)="removeItem(item)">Remove</button>
+          </div>
+        </div>
+        <div class="item-price">
+          <p class="price">{{item.price * item.quantity | currency}}</p>
+          <p class="unit-price" *ngIf="item.quantity > 1">{{item.price | currency}} each</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty Cart State -->
+    <div class="empty-cart" *ngIf="cartItems.length === 0">
+      <img src="assets/images/empty-cart.svg" alt="Empty cart">
+      <h2>Your cart is empty</h2>
+      <p>Looks like you haven't added any items to your cart yet</p>
+      <button routerLink="/products" class="primary-btn">Continue Shopping</button>
+    </div>
+  </div>
+
+  <!-- Order Summary -->
+  <div class="order-summary" *ngIf="cartItems.length > 0">
+    <h2>Order Summary</h2>
+    <div class="summary-row">
+      <span>Subtotal</span>
+      <span>{{subtotal | currency}}</span>
+    </div>
+    <div class="summary-row">
+      <span>Shipping</span>
+      <span>{{shipping | currency}}</span>
+    </div>
+    <div class="summary-row">
+      <span>Tax</span>
+      <span>{{tax | currency}}</span>
+    </div>
+    <div class="summary-row total">
+      <span>Total</span>
+      <span>{{total | currency}}</span>
+    </div>
+    <button class="primary-btn checkout-btn">Proceed to Checkout</button>
+    <button routerLink="/products" class="secondary-btn">Continue Shopping</button>
+  </div>
+</div>
+
+
+<!-- <div class="container mt-5">
     <h2 class="text-center mb-4">🛒 Cart Page</h2>
     <div class="d-flex justify-content-end mb-3">
       <button class="btn btn-primary" (click)="navigateToProductDetail()">← Go to product detail</button>
@@ -21,4 +88,4 @@
       </div>
     </div>
   </div>
-  
+   -->

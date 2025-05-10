@@ -72,7 +72,7 @@
                 </td>
               }
               <td>{{ product?.description }}</td>
-              <td><button class="btn btn-primary" [routerLink]="['/products/buy-product',product._id]">Buy</button></td>
+              <td><button class="btn btn-primary" (click)="goToCart(i)" [routerLink]="['/products/buy-product',product._id]">Buy</button></td>
             </tr>
             }  
           }

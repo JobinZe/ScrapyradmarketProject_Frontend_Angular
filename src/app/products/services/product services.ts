@@ -27,9 +27,7 @@ export class ProductServices{
         return data
       }))
     }
-    transferFilteredData(data:any){
-      console.log(data,"data");
-      
+    transferFilteredData(data:any){      
       this.productData.next(data)
     }
     bypassSecurity(file:string){
@@ -39,4 +37,5 @@ export class ProductServices{
   fetchDataById(objectId:string){
     return this.http.get(this.serverUrl + 'api/products/fetch-product/' + objectId)
   }
+
 }

@@ -10,5 +10,6 @@ export interface ProductItems{
     description: string,
     image: string,
     productId: 2,
-    categoryValues:CategoryModel
+    categoryValues:CategoryModel,
+    addToCart:boolean
 }

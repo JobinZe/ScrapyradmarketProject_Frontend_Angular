@@ -5,6 +5,7 @@ import { ProductServices } from '../services/product services';
 import { ProductModel } from '../models/product.model';
 import { debounceTime, distinctUntilChanged, map, Observable, of, startWith, switchMap } from 'rxjs';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { CartService } from '../services/cart-service';
 
 
 @Component({
@@ -22,7 +23,7 @@ export class DashboardComponent implements  OnInit {
      searchForm!:FormGroup
      productType$!:Observable<any[]>
      isSearchAdded:boolean=false
-     constructor( private router:Router,private fb:FormBuilder) {
+     constructor( private router:Router,private fb:FormBuilder,private cartService:CartService) {
      this.searchForm = this.fb.group({
       searchController:[null]
      })
@@ -69,10 +70,15 @@ export class DashboardComponent implements  OnInit {
             }
             )
         )
-
       }
       
-    
+    goToCart(id:number){
+     this.product$.subscribe((data:ProductModel)=>{
+      console.log(data,"data");
+      let objectId = data.updatedProduct[id]._id;
+      this.cartService.addToCatApi(objectId).subscribe()
+     })
+    }
      
    
 }
