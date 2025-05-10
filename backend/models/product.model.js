@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const {Mongoose} = require("mongoose");
 const AutoIncrement = require('mongoose-sequence')(mongoose)
 
 const productSchema=new mongoose.Schema({
@@ -7,7 +8,8 @@ const productSchema=new mongoose.Schema({
     categoryValues:{type:Number,required:true,ref:"Categories"},
     description:{type:String,required:true},
     image:{type:String,required:true},
-    userId:{type:mongoose.Schema.Types.ObjectId,ref:"User"}
+    userId:{type:mongoose.Schema.Types.ObjectId,ref:"User"},
+    addedToCart:{type:Boolean,required:true},
 })
 productSchema.plugin(AutoIncrement,{inc_field:'productId'})
 const Product = mongoose.model("Products",productSchema)
