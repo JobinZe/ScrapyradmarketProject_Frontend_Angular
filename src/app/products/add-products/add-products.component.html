@@ -34,8 +34,15 @@
                 Add Category
               </button>
         }
-     
+        <div class="mb-3">
+          <label class="form-label">Quantity</label>
+          <input class="form-control" placeholder="Enter quantity" formControlName="quantity">
+          <span class="text-danger">
+            <span class="text-danger" *ngIf="addProductForm.get('quantity')?.errors?.['pattern']">Only numbers are allowed</span>
+          </span>
+        </div>
   
+       
         <!-- Description -->
         <div class="mb-3">
           <label class="form-label">Description</label>

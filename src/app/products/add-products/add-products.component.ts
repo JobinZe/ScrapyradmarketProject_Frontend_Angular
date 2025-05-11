@@ -27,6 +27,7 @@ constructor( private modalService: NgbModal,private fb:FormBuilder,private produ
     productName:[null],
     price:[null],
     categoryValues:[null],
+    quantity:[null,[Validators.pattern('^[0-9]*$')]],
     description:[null],
     image:[null]
   })
@@ -70,6 +71,8 @@ this.formData.append('productName',JSON.stringify(this.addProductForm.get('produ
 this.formData.append('price',JSON.stringify(this.addProductForm.get('price')?.value))
 this.formData.append('categoryValues',JSON.stringify(Number(this.addProductForm.get('categoryValues')?.value)))
 this.formData.append('description',JSON.stringify(this.addProductForm.get('description')?.value))
+this.formData.append('quantity',this.addProductForm.get('quantity')?.value)
+
 this.productService.submitProduct(this.formData).subscribe({
   next:(res)=>{
     for(let keys of this.formData.keys()){
@@ -87,4 +90,6 @@ this.productService.submitProduct(this.formData).subscribe({
   }
 })
 }
+
+
 }
