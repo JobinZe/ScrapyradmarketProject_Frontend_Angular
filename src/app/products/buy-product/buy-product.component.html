@@ -7,28 +7,30 @@
 
   <div class="cart-content">
     <!-- Cart Items List -->
-    <div class="cart-items" *ngIf="cartItems.length > 0">
-      <div class="cart-item" *ngFor="let item of cartItems">
+    <div class="cart-items" >
+      @for(cart of cartItems;track cart.cartProductId;let i = $index){
+      <div class="cart-item" >
         <div class="item-image">
-          <img [src]="item.image" [alt]="item.name">
+          <img [src]="cart?.image" alt="Image Preview">
         </div>
         <div class="item-details">
-          <h3>{{item.name}}</h3>
-          <p class="item-description">{{item.description}}</p>
+          <h3>{{cart?.productName}}</h3>
+          <p class="item-description"> {{cart?.description}}</p>
           <div class="item-actions">
             <div class="quantity-selector">
-              <button (click)="decreaseQuantity(item)">-</button>
-              <span>{{item.quantity}}</span>
-              <button (click)="increaseQuantity(item)">+</button>
+              <button >-</button>
+              <span></span>
+              <button >+</button>
             </div>
-            <button class="remove-btn" (click)="removeItem(item)">Remove</button>
+            <button class="remove-btn" >Remove</button>
           </div>
         </div>
         <div class="item-price">
-          <p class="price">{{item.price * item.quantity | currency}}</p>
-          <p class="unit-price" *ngIf="item.quantity > 1">{{item.price | currency}} each</p>
+          <p class="price">{{cart?.price}}</p>
+          <p class="unit-price" > {{cart?.price}}each</p>
         </div>
       </div>
+    }
     </div>
 
     <!-- Empty Cart State -->

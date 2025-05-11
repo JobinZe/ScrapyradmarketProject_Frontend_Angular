@@ -40,7 +40,7 @@ router.get('/get-category',verifyToken,async(req,res)=>{
 
 router.post('/add-product',verifyToken,upload.single("image"),async(req,res)=>{//verifyToken to get tthe decoded token
   try{
-   const {productName,price,categoryValues,description}  = req.body
+   const {productName,price,categoryValues,description,quantity}  = req.body
    const userId=req.user.userId
    if(!productName || !price || !categoryValues || !description){
     res.status(500).json({message:"Failed to add Product"})
@@ -49,6 +49,7 @@ router.post('/add-product',verifyToken,upload.single("image"),async(req,res)=>{/
     productName,
     price,
     categoryValues,
+     quantity,
     description,
     image:req?.file ? req.file?.filename : null,
     userId:userId,

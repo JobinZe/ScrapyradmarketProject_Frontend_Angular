@@ -12,7 +12,7 @@ export class CartService{
 getCart(){
 return this.http.get(this.serverUrl + 'get-cart-details')
 }
-addToCatApi(objectId:string){
-    return this.http.post(this.serverUrl + 'add-to-cart/'+ objectId, null)
+addToCatApi(objectId:string,quantity:number){
+    return this.http.post(this.serverUrl + 'add-to-cart/'+ objectId,{quantity} )
   }
 }

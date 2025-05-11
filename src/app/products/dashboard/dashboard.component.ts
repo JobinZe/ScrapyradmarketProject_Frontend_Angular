@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit, ViewChild} from '@angular/core';
 import {UserRegistrationService} from '../../login/services/user-reg.services';
 import { Router } from '@angular/router';
 import { ProductServices } from '../services/product services';
@@ -6,6 +6,7 @@ import { ProductModel } from '../models/product.model';
 import { debounceTime, distinctUntilChanged, map, Observable, of, startWith, switchMap } from 'rxjs';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { CartService } from '../services/cart-service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -23,7 +24,9 @@ export class DashboardComponent implements  OnInit {
      searchForm!:FormGroup
      productType$!:Observable<any[]>
      isSearchAdded:boolean=false
-     constructor( private router:Router,private fb:FormBuilder,private cartService:CartService) {
+     @ViewChild('quantityField') quantityModal:any
+
+     constructor( private router:Router,private fb:FormBuilder,private cartService:CartService,private modalService:NgbModal) {
      this.searchForm = this.fb.group({
       searchController:[null]
      })
@@ -71,14 +74,55 @@ export class DashboardComponent implements  OnInit {
             )
         )
       }
-      
+    objectId:any  
+    presentQuantity:any;
     goToCart(id:number){
-     this.product$.subscribe((data:ProductModel)=>{
-      console.log(data,"data");
-      let objectId = data.updatedProduct[id]._id;
-      this.cartService.addToCatApi(objectId).subscribe()
+      this.openQuanityModal()
+      this.product$.subscribe((data:ProductModel)=>{
+       this.objectId = data.updatedProduct[id]._id;
+       this.presentQuantity = data.updatedProduct[id].quantity
      })
     }
-     
-   
+    showAlert:boolean=false;
+    alertType!:string;
+    message!:string;
+     updateQuantity(){ 
+     this.cartService.addToCatApi(this.objectId,this.valueForQuantity).subscribe(response=>{
+      let stringified =JSON.stringify(response);
+      let parsed = JSON.parse(stringified);
+      if(parsed.status == 1016){
+        this.showAlert=true;
+        this.alertType = 'danger'
+        this.message = "Not enough quantity available"
+      }
+      else if(parsed.status == 1014){
+        this.router.navigate(['/products/buy-product',this.objectId])
+      }
+     })
+     }
+    openQuanityModal(){
+      this.modalService.open(this.quantityModal)
+    }
+    valueForQuantity:number = 1
+    decrementButton(){
+     if(this.valueForQuantity > 1){
+      this.valueForQuantity--
+      this.checkQuantityValidation()
+     }
+    }
+    incrementQuantity(){
+      if(this.valueForQuantity > 0){
+        this.valueForQuantity++
+        this.checkQuantityValidation()
+      }
+    }
+    invalidQuantity:boolean=false;
+    checkQuantityValidation(){
+      if(this.valueForQuantity > this.presentQuantity){
+        this.invalidQuantity=true
+      }
+      else{
+        this.invalidQuantity=false;
+      }
+    }
 }

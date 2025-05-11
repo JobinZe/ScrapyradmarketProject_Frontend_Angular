@@ -9,7 +9,8 @@ export interface ProductItems{
     price: Number,
     description: string,
     image: string,
-    productId: 2,
+    productId: number,
+    quantity:number
     categoryValues:CategoryModel,
     addToCart:boolean
 }

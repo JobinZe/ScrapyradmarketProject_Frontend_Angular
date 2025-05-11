@@ -26,9 +26,6 @@ export class BuyProductComponent implements OnInit{
     private cartService:CartService){}
   ngOnInit(): void {
   this.route.paramMap.pipe(map(res=>res.get('id'))).subscribe(res=>this.scrapId = res as string)
-  this.productService.fetchDataById(this.scrapId).subscribe((response)=>{
-    this.product=response
-   })
    this.getCartDetails()
   }
 
@@ -73,6 +70,11 @@ export class BuyProductComponent implements OnInit{
       let data = JSON.stringify(response);
       let parsed  = JSON.parse(data)
       this.cartItems = parsed?.cartItems
+      console.log(this.cartItems,"cart");
+    
     })
+  }
+  calculateProductQuantity(){
+    
   }
 }

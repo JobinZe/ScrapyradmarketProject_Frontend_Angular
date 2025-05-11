@@ -28,6 +28,7 @@
           <th>Name</th>
           <th>Price (INR)</th>
           <th>Category</th>
+          <th>Quantity</th>
           <th>Image</th>
           <th>Description</th>
           <th>Action</th>
@@ -50,6 +51,7 @@
               </td>
               <td class="text-center">{{ product?.price | currency: 'INR' : true  }}</td>
               <td class="text-center">{{ product?.categoryValues?.category }}</td>
+              <td class="text-center">{{ product?.quantity }}</td>
 
               @if(fetchFileType(i) | async; as fileType) {
                 <td class="text-center">
@@ -72,7 +74,7 @@
                 </td>
               }
               <td>{{ product?.description }}</td>
-              <td><button class="btn btn-primary" (click)="goToCart(i)" [routerLink]="['/products/buy-product',product._id]">Buy</button></td>
+              <td><button class="btn btn-primary" (click)="goToCart(i)">Buy</button></td>
             </tr>
             }  
           }
@@ -146,3 +148,24 @@
     </table>
   </div>
 </div>
+
+<ng-template #quantityField let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Select Quantity</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <div class="quantity-selector">
+      <button (click)="decrementButton()">-</button>
+      <span>{{valueForQuantity}}</span>
+      <button (click)="incrementQuantity()">+</button>
+    </div>
+    <span class="text-danger" *ngIf="invalidQuantity">
+     Invalid no of Quantity
+    </span>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="invalidQuantity ? modal.dismiss() : updateQuantity()">Confirm</button>
+  </div>
+</ng-template>
