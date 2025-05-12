@@ -40,6 +40,7 @@ router.get('/get-category',verifyToken,async(req,res)=>{
 
 router.post('/add-product',verifyToken,upload.single("image"),async(req,res)=>{//verifyToken to get tthe decoded token
   try{
+    console.log(req.file)
    const {productName,price,categoryValues,description,quantity}  = req.body
    const userId=req.user.userId
    if(!productName || !price || !categoryValues || !description){
@@ -65,7 +66,7 @@ router.post('/add-product',verifyToken,upload.single("image"),async(req,res)=>{/
 router.get('/fetch-products',verifyToken,async(req,res)=>{
     try{
         const userId=req.user.userId
-        const product = await Product.find({userId}).populate("categoryValues","category")// populate is used to fetch the entire schema of category
+        const product = await Product.find({userId,quantityAvailable: true}).populate("categoryValues","category")// populate is used to fetch the entire schema of category
         const updatedProduct = product.map(data=>({
             ...data._doc,
             imageUrl: data.image ? `${req.protocol}://${req.get('host')}/upload/${data.image}` : null

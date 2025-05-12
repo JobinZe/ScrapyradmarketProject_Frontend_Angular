@@ -11,6 +11,7 @@ const productSchema=new mongoose.Schema({
     image:{type:String,required:true},
     userId:{type:mongoose.Schema.Types.ObjectId,ref:"User"},
     addedToCart:{type:Boolean,required:true},
+    quantityAvailable:{type:Boolean,default:true},
 })
 productSchema.plugin(AutoIncrement,{inc_field:'productId'})
 const Product = mongoose.model("Products",productSchema)
