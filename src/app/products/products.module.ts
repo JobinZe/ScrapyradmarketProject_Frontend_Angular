@@ -6,13 +6,15 @@ import { AddProductsComponent } from './add-products/add-products.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { BuyProductComponent } from './buy-product/buy-product.component';
+import { CheckoutPageComponent } from './checkout-page/checkout-page.component';
 
 
 @NgModule({
   declarations: [
     AddProductsComponent,
     DashboardComponent,
-    BuyProductComponent
+    BuyProductComponent,
+    CheckoutPageComponent
   ],
   imports: [
     RouterModule,

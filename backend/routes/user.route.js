@@ -9,18 +9,20 @@ const verifyToken = require('../middlewares/tokenverification')
 router.post('/register', async (req, res) => {
   console.log("Entered Register API");
 
-  const { userName,email,gender,gamingSkill, password } = req.body;
+  const { userName,email,gender,type, password } = req.body;
   try {
-    const existingUser = await UserModel.findOne({userName:userName,email:email})
+    const existingUser = await UserModel.findOne({userName:userName})
+    const existingEmail = await UserModel.findOne({email:email})
+
     console.log(existingUser,"exc")
-      if(existingUser){
-        return res.status(400).json({
+      if(existingUser || existingEmail){
+        return res.status(200).json({
           status:1006,
           message:"Already registered"
         })
       }
       const hashedPwd = await bcrypt.hash(password, 10); //  Fixed `await`
-      const newUser = new UserModel({ userName, email,gender, gamingSkill, password: hashedPwd });
+      const newUser = new UserModel({ userName, email,gender, type, password: hashedPwd });
       await newUser.save();
       res.status(200).json({ message: "User created successfully",status:1000 });
   } catch (err) {
@@ -45,7 +47,7 @@ router.post('/login',async(req,res)=>{
    const token = jwt.sign({userId:user._id,username:user.userName},process.env.SECRET_KEY,{
     expiresIn:'1h'
    })
-   return res.status(200).json({message:"Log In Success",status:1001,isLoggedIn:true,token})
+   return res.status(200).json({message:"Log In Success",status:1001,isLoggedIn:true,token,type:user.type})
   }
   catch(err){
    console.log(err,"Log In Failed")

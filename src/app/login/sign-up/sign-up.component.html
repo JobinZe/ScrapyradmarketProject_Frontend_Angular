@@ -34,14 +34,14 @@
             </div>
             <div class="form-group">
               <label for="exampleFormControlSelect2">Please select your type</label>
-              <select  class="form-select" id="exampleFormControlSelect2" formControlName="gamingSkill" >
+              <select  class="form-select" id="exampleFormControlSelect2" formControlName="type" >
                 <option value="">Please select</option>
                 <option [value]="1">Buyer</option>
                 <option [value]="2">Seller</option>
                
               </select>
-              <span class="text-danger" *ngIf="userRegForm.get('gamingSkill')?.touched || userRegForm.get('gamingSkill')?.dirty">
-                <span *ngIf="userRegForm.get('gamingSkill')?.errors?.['required'] ">Please select your type</span>
+              <span class="text-danger" *ngIf="userRegForm.get('type')?.touched || userRegForm.get('type')?.dirty">
+                <span *ngIf="userRegForm.get('type')?.errors?.['required'] ">Please select your type</span>
                 </span>
             </div>
             <div class="form-group">

@@ -24,12 +24,12 @@ constructor( private modalService: NgbModal,private fb:FormBuilder,private produ
     category:[null,[Validators.required]]
   })
   this.addProductForm = this.fb.group({
-    productName:[null],
-    price:[null],
-    categoryValues:[null],
+    productName:[null,[Validators.required]],
+    price:[null,[Validators.required]],
+    categoryValues:[null,[Validators.required]],
     quantity:[null,[Validators.pattern('^[0-9]*$')]],
-    description:[null],
-    image:[null]
+    description:[null,[Validators.required]],
+    image:[null,[Validators.required]]
   })
 }
   ngOnInit(): void {

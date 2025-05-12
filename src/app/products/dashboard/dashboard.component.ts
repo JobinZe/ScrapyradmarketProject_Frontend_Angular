@@ -7,6 +7,8 @@ import { debounceTime, distinctUntilChanged, map, Observable, of, startWith, swi
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { CartService } from '../services/cart-service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Store } from '@ngrx/store';
+import { selectionSessionState } from '../../login/store/auth-selector';
 
 
 @Component({
@@ -24,15 +26,20 @@ export class DashboardComponent implements  OnInit {
      searchForm!:FormGroup
      productType$!:Observable<any[]>
      isSearchAdded:boolean=false
+     userDetails:any
      @ViewChild('quantityField') quantityModal:any
 
-     constructor( private router:Router,private fb:FormBuilder,private cartService:CartService,private modalService:NgbModal) {
+     constructor( private router:Router,private fb:FormBuilder,private cartService:CartService,private modalService:NgbModal,
+      private store:Store) {
      this.searchForm = this.fb.group({
       searchController:[null]
      })
      }
     ngOnInit(): void {
       this.productService.fetchData().subscribe()
+      this.store.select(selectionSessionState).subscribe(response=>{
+          this.userDetails = response    
+      })
     }
     navigateToProduct(){
     this.router.navigateByUrl('products/add-product')
@@ -90,13 +97,14 @@ export class DashboardComponent implements  OnInit {
      this.cartService.addToCatApi(this.objectId,this.valueForQuantity).subscribe(response=>{
       let stringified =JSON.stringify(response);
       let parsed = JSON.parse(stringified);
+      this.modalService.dismissAll()
       if(parsed.status == 1016){
         this.showAlert=true;
         this.alertType = 'danger'
         this.message = "Not enough quantity available"
       }
       else if(parsed.status == 1014){
-        this.router.navigate(['/products/buy-product',this.objectId])
+        this.router.navigate(['/products/buy-product'])
       }
      })
      }

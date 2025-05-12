@@ -7,7 +7,7 @@
 
   <div class="cart-content">
     <!-- Cart Items List -->
-    <div class="cart-items" >
+    <div class="cart-items" *ngIf="cartItems.length > 0" >
       @for(cart of cartItems;track cart.cartProductId;let i = $index){
       <div class="cart-item" >
         <div class="item-image">
@@ -17,12 +17,12 @@
           <h3>{{cart?.productName}}</h3>
           <p class="item-description"> {{cart?.description}}</p>
           <div class="item-actions">
-            <div class="quantity-selector">
+            <!-- <div class="quantity-selector">
               <button >-</button>
               <span></span>
               <button >+</button>
-            </div>
-            <button class="remove-btn" >Remove</button>
+            </div> -->
+            <button class="remove-btn" (click)="openRemovePopup(i)">Remove</button>
           </div>
         </div>
         <div class="item-price">
@@ -35,10 +35,10 @@
 
     <!-- Empty Cart State -->
     <div class="empty-cart" *ngIf="cartItems.length === 0">
-      <img src="assets/images/empty-cart.svg" alt="Empty cart">
+      <img src="assets/images/empty-cart.png" alt="Empty cart">
       <h2>Your cart is empty</h2>
       <p>Looks like you haven't added any items to your cart yet</p>
-      <button routerLink="/products" class="primary-btn">Continue Shopping</button>
+      <button routerLink="/products/dashboard" class="primary-btn">Continue Shopping</button>
     </div>
   </div>
 
@@ -91,3 +91,23 @@
     </div>
   </div>
    -->
+   <ng-template #quantityField let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Select Quantity</h4>
+      <a type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></a>
+    </div>
+    <div class="modal-body">
+      <div class="quantity-selector">
+        <button (click)="decreaseQuantity()">-</button>
+        <span>{{intialValue}}</span>
+        <button (click)="increaseQuantity()">+</button>
+      </div>
+      <span class="text-danger" *ngIf="invalidQuantity">
+       Invalid no of Quantity
+      </span>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+      <button type="button" class="btn btn-primary" (click)="invalidQuantity ? modal.dismiss() : removeFromCart()">Confirm</button>
+    </div>
+  </ng-template>

@@ -106,7 +106,7 @@
               </td>
               <td class="text-center">{{ product?.price | currency: 'INR' : true  }}</td>
               <td class="text-center">{{ product?.categoryValues?.category }}</td>
-
+              <td class="text-center">{{ product?.quantity }}</td>
               @if(fetchFileTypeForSearch(prod,i) | async; as fileType) {
                 <td class="text-center">
                   <ng-container *ngIf="fileType == 'image'; else documentView">
@@ -152,7 +152,7 @@
 <ng-template #quantityField let-modal>
   <div class="modal-header">
     <h4 class="modal-title">Select Quantity</h4>
-    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    <a type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></a>
   </div>
   <div class="modal-body">
     <div class="quantity-selector">

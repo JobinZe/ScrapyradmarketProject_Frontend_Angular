@@ -19,13 +19,13 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     ForgotPasswordComponent,
     OfflineComponent,
     AfterLoginComponent,
-    SessionExpiredComponent
+    SessionExpiredComponent,
+    ErrorComponent
 
   ],
   imports: [
     RouterModule,
     CommonModule,
-    ErrorComponent,
     CommonRouterModule,
     ReactiveFormsModule,
     NgbModule

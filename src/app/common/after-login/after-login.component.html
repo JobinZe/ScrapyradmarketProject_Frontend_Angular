@@ -1,9 +1,10 @@
 <nav class="nav-bar">
     <div class="left-link">
-        <a>Home</a>
+        <a routerLink="/products/dashboard">Home</a>
     </div>
 
     <div class="right-link">
+        <a [routerLink]="'products/buy-product'" >My Cart</a>
         <a (click)="logOut()" >Log Out</a>
     </div>
 </nav>

@@ -15,4 +15,8 @@ return this.http.get(this.serverUrl + 'get-cart-details')
 addToCatApi(objectId:string,quantity:number){
     return this.http.post(this.serverUrl + 'add-to-cart/'+ objectId,{quantity} )
   }
+  removeFromCart(objectId:string,quantity:number){
+    return this.http.post(this.serverUrl + '/remove-cart-items/' + objectId,{quantity})
+
+  }
 }

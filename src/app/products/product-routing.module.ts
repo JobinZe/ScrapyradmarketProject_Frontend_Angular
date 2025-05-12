@@ -6,12 +6,14 @@ import { AuthGuard } from '../services/auth-guard.guard';
 import { AddProductsComponent } from './add-products/add-products.component';
 import { ProductDetailsComponent } from './product-details/product-details.component';
 import { BuyProductComponent } from './buy-product/buy-product.component';
+import { CheckoutPageComponent } from './checkout-page/checkout-page.component';
 
 export const routes:Routes=[
   {path:'dashboard',component:DashboardComponent,canActivate:[AuthGuard]},
   {path:'add-product',component:AddProductsComponent,canActivate:[AuthGuard]},
   {path:'product-detail/:id',component:ProductDetailsComponent,canActivate:[AuthGuard]},
-  {path:'buy-product/:id',component:BuyProductComponent,canActivate:[AuthGuard]}
+  {path:'buy-product',component:BuyProductComponent,canActivate:[AuthGuard]},
+  {path:'checkout',component:CheckoutPageComponent,canActivate:[AuthGuard]}
 
 ]
 

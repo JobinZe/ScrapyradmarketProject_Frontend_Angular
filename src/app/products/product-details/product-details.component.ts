@@ -41,7 +41,7 @@ export class ProductDetailsComponent implements OnInit{
     this.router.navigateByUrl('/products/dashboard')
   }
   navigateToBuyProduct(){
-    this.router.navigateByUrl('/products/buy-product/' + this.objectId)
+    this.router.navigateByUrl('/products/buy-product')
 
   }
 }

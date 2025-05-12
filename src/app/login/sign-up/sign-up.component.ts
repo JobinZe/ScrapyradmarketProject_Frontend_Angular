@@ -20,7 +20,7 @@ export class SignUpComponent implements OnInit{
     email:['',[Validators.required]],
     userName:['',[Validators.required]],
     gender:['',[Validators.required]],
-    gamingSkill:['',[Validators.required]],
+    type:['',[Validators.required]],
     password:['',[Validators.required,Validators.minLength(5)]]
   })
   }
@@ -42,6 +42,11 @@ signUp(){
       let msg="Registration Successfull"
       const navigationExtras:NavigationExtras={state:{data:{msg:msg}}}
       this.router.navigate(['/login'],navigationExtras)
+    }
+    else if(parsed.status == 1006) {
+      this.showAlert=true;
+      this.msgType='danger';
+      this.message="Username or EmailId is already registered"
     }
     else{
       this.message="Server Error"

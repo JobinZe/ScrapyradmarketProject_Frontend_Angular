@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductServices } from '../services/product services';
-import { map } from 'rxjs';
+import { debounceTime, map } from 'rxjs';
 import { CartService } from '../services/cart-service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 interface CartItem {
   id: string;
   name: string;
@@ -19,13 +20,13 @@ interface CartItem {
 })
 
 export class BuyProductComponent implements OnInit{
-  scrapId!:string
   product:any;
   cartItems:any[]=[]
+  @ViewChild('quantityField') quantityField:any
   constructor(private route:ActivatedRoute,private router:Router,private productService:ProductServices,
+    private modalService:NgbModal,
     private cartService:CartService){}
   ngOnInit(): void {
-  this.route.paramMap.pipe(map(res=>res.get('id'))).subscribe(res=>this.scrapId = res as string)
    this.getCartDetails()
   }
 
@@ -37,44 +38,90 @@ export class BuyProductComponent implements OnInit{
     return this.cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   }
 
-  get tax(): number {
-    console.log(this.subtotal, this.taxRate,this.subtotal * this.taxRate);
-    
+  get tax(): number {    
     return this.subtotal * this.taxRate;
   }
 
   get total(): number {
     return this.subtotal + this.shipping + this.tax;
   }
-
-  increaseQuantity(item: CartItem): void {
-    item.quantity++;
-  }
-
-  decreaseQuantity(item: CartItem): void {
-    if (item.quantity > 1) {
-      item.quantity--;
+  intialValue:number = 1;
+  invalidQuantity:boolean=false
+  increaseQuantity(): void {    
+    if(!this.invalidQuantity ){
+      this.intialValue++
     }
+    this.checkForInvalidQuantity()
   }
 
+  decreaseQuantity(): void {
+    if(this.intialValue > 1){
+      this.intialValue--
+    }
+    this.checkForInvalidQuantity()
+  }
+checkForInvalidQuantity(){
+if(this.intialValue > this.presentQuantity){
+  this.invalidQuantity=true
+}
+else{
+  this.invalidQuantity=false
+
+}
+}
   removeItem(item: CartItem): void {
     this.cartItems = this.cartItems.filter(i => i.id !== item.id);
   }
  
   navigateToProductDetail(){
-   this.router.navigate(['/products/product-detail',this.scrapId])
+   this.router.navigate(['/products/dashboard'])
   }
 
   getCartDetails(){
     this.cartService.getCart().subscribe(response=>{
       let data = JSON.stringify(response);
       let parsed  = JSON.parse(data)
-      this.cartItems = parsed?.cartItems
-      console.log(this.cartItems,"cart");
-    
+      if(parsed.status == 1015){
+        this.cartItems = []
+      }
+      else if(parsed.status == 1016){
+        this.cartItems = parsed?.cartItems    
+      }
     })
   }
-  calculateProductQuantity(){
-    
+  showAlert:boolean=false;
+  alertType!:string;
+  message!:string
+  removeFromCart(){
+     this.cartService.removeFromCart(this.presentObjectId,this.intialValue).subscribe(response=>{
+       let stringified = JSON.stringify(response);
+       let parsed = JSON.parse(stringified);
+       this.modalService.dismissAll()
+       if(parsed.status == 1020){
+        this.showAlert=true;
+        this.alertType = 'success'
+        this.message = "Product removed sucessfully"
+       }
+       else if(parsed.status == 1018){
+        this.showAlert=true;
+        this.alertType = 'success'
+        this.message = "No cart items found"
+       }
+       else{
+        this.showAlert=true;
+        this.alertType = 'success'
+        this.message = "Server Error"
+       }
+     })
+    debounceTime(500);
+     this.getCartDetails()
   }
+  presentQuantity!:number
+  presentObjectId!:string
+  openRemovePopup(id:number){
+    this.modalService.open(this.quantityField)
+    this.presentQuantity = this.cartItems[id].quantity
+    this.presentObjectId = this.cartItems[id]._id
+  }
+ 
 }
