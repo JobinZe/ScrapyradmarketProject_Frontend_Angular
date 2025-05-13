@@ -21,7 +21,6 @@ export class LoginComponent implements OnInit{
     private router:Router){
       const navigation = this.router.getCurrentNavigation();
      this.message = navigation?.extras?.state?.['data']?.['msg']
-      console.log(navigation?.extras?.state?.['data']?.['msg']);
       if(this.message){
         this.showAlert=true
       }
