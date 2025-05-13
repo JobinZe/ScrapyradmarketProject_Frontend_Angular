@@ -3,6 +3,7 @@ const router = express.Router();
 const categoryModel=require('../models/category-model')
 const upload = require('../middlewares/upload-document');
 const Product = require('../models/product.model');
+const User = require('../models/user.model');
 const verifyToken = require('../middlewares/tokenverification');
 
 router.post('/add-categories',verifyToken,async(req,res)=>{
@@ -12,10 +13,7 @@ router.post('/add-categories',verifyToken,async(req,res)=>{
         if(!category){
             return res.status(400).json({message:"Category Not Recieved",status:1009})
         }
-        const categoryValues={
-          category:category,
-          userId:userId
-        }
+
         const schema = await new categoryModel({category,userId})
         await schema.save()
         res.status(200).json({message:"Category Aded Suceessfuly",status:1010})
@@ -67,7 +65,12 @@ router.post('/add-product',verifyToken,upload.single("image"),async(req,res)=>{/
 router.get('/fetch-products',verifyToken,async(req,res)=>{
     try{
         const userId=req.user.userId
-        const product = await Product.find({userId,quantityAvailable: true}).populate("categoryValues","category")// populate is used to fetch the entire schema of category
+        let productQuery = {quantityAvailable: true}
+        const userSchema =await User.findOne({_id:userId})
+        if(userSchema.type == 2){
+          productQuery.userId = userId
+        }
+        const product = await Product.find(productQuery).populate("categoryValues","category")// populate is used to fetch the entire schema of category
         const updatedProduct = product.map(data=>({
             ...data._doc,
             imageUrl: data.image ? `${req.protocol}://${req.get('host')}/upload/${data.image}` : null
@@ -111,22 +114,34 @@ router.post('/delete-product/:id',verifyToken,async(req,res)=>{
   await fetchProductToDelete.deleteOne()
   return res.status(200).json({status:1022,message:"Product deleted successfully"})
 });
-router.post('/update-product/:id',verifyToken,async(req,res)=>{
+router.post('/update-product/:id',verifyToken,upload.single("image"),async(req,res)=>{
   try {
     const payload = req.body;
     const objectId = req.params.id;
     const userId = req.user.userId;
+    const filePresent = req.file;
+    console.log(filePresent,"fp")
     console.log(req.body,"payload")
     const findActualProduct = await Product.findOne({userId: userId, _id: objectId})
     console.log(findActualProduct, "fetchproduct")
     if (!findActualProduct) {
       return res.status(400).json({stats: 1022, message: "product doesnt exist"})
     }
-    Object.assign(findActualProduct, payload)
+    if(filePresent){
+      findActualProduct.image = filePresent.filename;
+    }
+    const parsedPayload = {
+      productName: JSON.parse(payload.productName),
+      price: JSON.parse(payload.price),
+      categoryValues: JSON.parse(payload.categoryValues),
+      description: JSON.parse(payload.description),
+      quantity: JSON.parse(payload.quantity),
+      imageName: JSON.parse(payload.imageName),
+    };
+
+    Object.assign(findActualProduct, parsedPayload)
     await findActualProduct.save()
     return res.status(200).json({status: 1023, message: "Product updated"})
-    const reRun = await Product.findOne({userId: userId, _id: objectId})
-console.log(reRun,"after updating")
   }
   catch(error){
     console.log(error)
