@@ -118,9 +118,9 @@ updateProduct(){
   this.formData.append('quantity',this.addProductForm.get('quantity')?.value)
   this.formData.append('imageName',JSON.stringify(this.productObj?.image))
 
-  if(this.isUpdatePage && !this.imageDeleted){
-    this.formData.append('image',JSON.stringify(this.productObj?.image))
-  }
+  // if(this.isUpdatePage && !this.imageDeleted){
+  //   this.formData.append('image',JSON.stringify(this.productObj?.image))
+  // }
 
   this.productService.updateProduct(this.objectId,this.formData).subscribe(response=>{
     for(let keys of this.formData.keys()){

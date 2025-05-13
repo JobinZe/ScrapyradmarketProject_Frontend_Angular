@@ -41,6 +41,6 @@ export class ProductServices{
     return this.http.post(this.serverUrl + 'api/products/delete-product/' + objectId,{})
   }
   updateProduct(objectId:any,data:any){
-    return this.http.post(this.serverUrl + 'api/products/update-product/' + objectId,data)
+    return this.http.post(this.serverUrl + `api/products/update-product/${objectId}`,data)
   }
 }
