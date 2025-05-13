@@ -55,6 +55,7 @@ router.post('/add-product',verifyToken,upload.single("image"),async(req,res)=>{/
     image:req?.file ? req.file?.filename : null,
     userId:userId,
      addedToCart:false,
+     imageName:req?.file ? req.file?.filename : null,
    })
    await product.save()
    res.status(200).json({message:'Product Saved Successfuly',status:1012})
@@ -96,5 +97,41 @@ router.get('/fetch-product/:id',verifyToken,async(req,res)=>{
       res.status(500).json({message:"Error",error:err})
     }
 })
+router.post('/delete-product/:id',verifyToken,async(req,res)=>{
+  const productId = req.params.id;
+  const userId = req.user.userId;
+  console.log(productId,"product id")
+  if(!productId || !userId){
+    return res.status(500).json({message:"Product Id is missing"})
+  }
+  const fetchProductToDelete = await Product.findOne({userId:userId,_id:productId});
+  if(!fetchProductToDelete){
+    return res.status(200).json({status:1021,message:"Product not found"})
+  }
+  await fetchProductToDelete.deleteOne()
+  return res.status(200).json({status:1022,message:"Product deleted successfully"})
+});
+router.post('/update-product/:id',verifyToken,async(req,res)=>{
+  try {
+    const payload = req.body;
+    const objectId = req.params.id;
+    const userId = req.user.userId;
+    console.log(req.body,"payload")
+    const findActualProduct = await Product.findOne({userId: userId, _id: objectId})
+    console.log(findActualProduct, "fetchproduct")
+    if (!findActualProduct) {
+      return res.status(400).json({stats: 1022, message: "product doesnt exist"})
+    }
+    Object.assign(findActualProduct, payload)
+    await findActualProduct.save()
+    return res.status(200).json({status: 1023, message: "Product updated"})
+    const reRun = await Product.findOne({userId: userId, _id: objectId})
+console.log(reRun,"after updating")
+  }
+  catch(error){
+    console.log(error)
+    return res.status(500).json({stats: 1025, message: "Internal Server Error"})
 
+  }
+})
 module.exports = router

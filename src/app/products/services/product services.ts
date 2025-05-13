@@ -37,5 +37,10 @@ export class ProductServices{
   fetchDataById(objectId:string){
     return this.http.get(this.serverUrl + 'api/products/fetch-product/' + objectId)
   }
-
+  deleteProduct(objectId:number){
+    return this.http.post(this.serverUrl + 'api/products/delete-product/' + objectId,{})
+  }
+  updateProduct(objectId:any,data:any){
+    return this.http.post(this.serverUrl + 'api/products/update-product/' + objectId,data)
+  }
 }

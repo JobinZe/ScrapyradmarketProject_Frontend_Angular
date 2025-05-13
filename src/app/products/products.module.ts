@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { BuyProductComponent } from './buy-product/buy-product.component';
 import { CheckoutPageComponent } from './checkout-page/checkout-page.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { CheckoutPageComponent } from './checkout-page/checkout-page.component';
     ProductRoutingModule,
     CommonModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    NgbModule
   ],
   exports:[
     ProductRoutingModule

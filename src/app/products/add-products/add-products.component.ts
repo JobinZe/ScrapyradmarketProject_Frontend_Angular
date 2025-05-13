@@ -3,7 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProductServices } from '../services/product services';
 import { CategoryModel } from '../models/category.model';
-import { Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, ParamMap, Router } from '@angular/router';
+import { debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-add-products',
@@ -19,7 +20,13 @@ export class AddProductsComponent implements OnInit{
   formData:any = new FormData()
   selectedFile!:FileList
   file!:File
-constructor( private modalService: NgbModal,private fb:FormBuilder,private productService:ProductServices,private router:Router){
+  message!:string
+  alertType!:string
+  showAlert!:boolean
+  isUpdatePage:boolean=false
+  objectId!:string
+constructor( private modalService: NgbModal,private fb:FormBuilder,private productService:ProductServices,private router:Router,
+  private route:ActivatedRoute){
   this.categoryForm = this.fb.group({
     category:[null,[Validators.required]]
   })
@@ -30,7 +37,21 @@ constructor( private modalService: NgbModal,private fb:FormBuilder,private produ
     quantity:[null,[Validators.pattern('^[0-9]*$')]],
     description:[null,[Validators.required]],
     image:[null,[Validators.required]]
-  })
+  });
+  console.log(this.router.url.indexOf('update-product'),"Sssssssssssss")
+  if(this.router.url.indexOf('update-product') != -1){
+    this.isUpdatePage=true
+  }
+  else{
+    this.isUpdatePage=false
+  }
+  if(this.isUpdatePage){
+     this.route.paramMap.subscribe((res:ParamMap)=>{
+      this.objectId= res.get('id') as string
+      this.fetchUpdateDataforFields()
+
+    })
+  }
 }
   ngOnInit(): void {
     this.fetchCategory()
@@ -71,8 +92,7 @@ this.formData.append('productName',JSON.stringify(this.addProductForm.get('produ
 this.formData.append('price',JSON.stringify(this.addProductForm.get('price')?.value))
 this.formData.append('categoryValues',JSON.stringify(Number(this.addProductForm.get('categoryValues')?.value)))
 this.formData.append('description',JSON.stringify(this.addProductForm.get('description')?.value))
-this.formData.append('quantity',this.addProductForm.get('quantity')?.value)
-
+this.formData.append('quantity',this.addProductForm.get('quantity')?.value);
 this.productService.submitProduct(this.formData).subscribe({
   next:(res)=>{
     for(let keys of this.formData.keys()){
@@ -90,6 +110,63 @@ this.productService.submitProduct(this.formData).subscribe({
   }
 })
 }
+updateProduct(){
+  this.formData.append('productName',JSON.stringify(this.addProductForm.get('productName')?.value))
+  this.formData.append('price',JSON.stringify(this.addProductForm.get('price')?.value))
+  this.formData.append('categoryValues',JSON.stringify(Number(this.addProductForm.get('categoryValues')?.value)))
+  this.formData.append('description',JSON.stringify(this.addProductForm.get('description')?.value))
+  this.formData.append('quantity',this.addProductForm.get('quantity')?.value)
+  this.formData.append('imageName',JSON.stringify(this.productObj?.image))
+
+  if(this.isUpdatePage && !this.imageDeleted){
+    this.formData.append('image',JSON.stringify(this.productObj?.image))
+  }
+
+  this.productService.updateProduct(this.objectId,this.formData).subscribe(response=>{
+    for(let keys of this.formData.keys()){
+      this.formData.delete(keys)
+    }
+    let stringified = JSON.stringify(response);
+    let parsed =  JSON.parse(stringified);
+    if(parsed.status == 1023){
+         this.message = "Product updated successfuly";
+         this.alertType="success";
+         this.showAlert=true
+         const nE:NavigationExtras={state:{data:{msg:this.message,alertType:this.alertType}}}
+         this.router.navigate(['products/dashboard'],nE)
+
+    }
+    else if(parsed.status == 1022){
+      this.message = "Product not found";
+      this.alertType="danger";
+      this.showAlert=true
+    }
+    else{
+      this.message = "Server error";
+      this.alertType="danger";
+      this.showAlert=true
+    }
+  })
+}
+productObj:any
+fetchUpdateDataforFields(){
+  this.productService.fetchDataById(this.objectId).subscribe(response=>{
+    this.productObj=response;
+    debounceTime(500);
+    this.setValues()
+   })
 
 
+}
+setValues(){
+  this.addProductForm.get('productName')?.patchValue(this.productObj?.productName)
+  this.addProductForm.get('price')?.patchValue(this.productObj?.price)
+  this.addProductForm.get('categoryValues')?.patchValue(this.productObj?.categoryValues?._id)
+  this.addProductForm.get('description')?.patchValue(this.productObj?.description)
+  this.addProductForm.get('quantity')?.patchValue(this.productObj?.quantity)
+}
+imageDeleted:boolean=false
+deleteImage(){
+this.imageDeleted = true
+}
 }

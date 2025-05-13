@@ -27,6 +27,9 @@ export class DashboardComponent implements  OnInit {
      productType$!:Observable<any[]>
      isSearchAdded:boolean=false
      userDetails:any
+     showAlert:boolean=false
+     alertType!:string
+     message!:string
      @ViewChild('quantityField') quantityModal:any
 
      constructor( private router:Router,private fb:FormBuilder,private cartService:CartService,private modalService:NgbModal,
@@ -36,10 +39,14 @@ export class DashboardComponent implements  OnInit {
      })
      }
     ngOnInit(): void {
-      this.productService.fetchData().subscribe()
+      this.fetchDataForDashboard()
       this.store.select(selectionSessionState).subscribe(response=>{
-          this.userDetails = response    
+          this.userDetails = response;
       })
+    }
+    fetchDataForDashboard(){
+      this.productService.fetchData().subscribe()
+
     }
     navigateToProduct(){
     this.router.navigateByUrl('products/add-product')
@@ -90,9 +97,7 @@ export class DashboardComponent implements  OnInit {
        this.presentQuantity = data.updatedProduct[id].quantity
      })
     }
-    showAlert:boolean=false;
-    alertType!:string;
-    message!:string;
+  
      updateQuantity(){ 
      this.cartService.addToCatApi(this.objectId,this.valueForQuantity).subscribe(response=>{
       let stringified =JSON.stringify(response);
@@ -133,4 +138,28 @@ export class DashboardComponent implements  OnInit {
         this.invalidQuantity=false;
       }
     }
+    deleteProduct(i:number){
+      this.productService.deleteProduct(i).subscribe(response=>{
+        let stringified = JSON.stringify(response);
+        let parsed =  JSON.parse(stringified);
+        debounceTime(500);
+        this.fetchDataForDashboard()
+        if(parsed.status == 1022){
+             this.message = "Product deleted successfuly";
+             this.alertType="success";
+             this.showAlert=true
+        }
+        else if(parsed.status == 1021){
+          this.message = "Product not found";
+          this.alertType="danger";
+          this.showAlert=true
+        }
+        else{
+          this.message = "Server error";
+          this.alertType="danger";
+          this.showAlert=true
+        }
+      })
+    }
+ 
 }
