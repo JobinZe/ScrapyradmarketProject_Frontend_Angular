@@ -131,7 +131,7 @@
                   <ng-template #documentView>
                     <iframe
                       title="file"
-                      [src]="bypassSecurity(product.imageUrl)"
+                      [src]="bypassSecurity(product?.imageUrl)"
                       class="rounded shadow-sm"
                       style="width: 120px; height: 80px;"
                     ></iframe>

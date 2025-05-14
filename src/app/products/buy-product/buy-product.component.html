@@ -11,11 +11,32 @@
       @for(cart of cartItems;track cart.cartProductId;let i = $index){
       <div class="cart-item" >
         <div class="item-image">
-          <img [src]="cart?.image" alt="Image Preview">
+          <!-- <img [src]="cart?.image" alt="Image Preview"> -->
+          @if(fetchFileType(cart) | async; as fileType){
+          <ng-container *ngIf="fileType == 'image'; else documentView">
+            <img
+              [src]="cart?.image"
+              alt="File Preview"
+              class="img-fluid rounded shadow-sm"
+              style="max-width: 80px; max-height: 80px;"
+            />
+          </ng-container>
+          <ng-template #documentView>
+            <iframe
+            *ngIf="cart?.image"
+              title="file"
+              [src]="bypassSecurity(cart.image)"
+              class="rounded shadow-sm"
+              style="width: 120px; height: 80px;"
+            ></iframe>
+          </ng-template>
+        }
         </div>
         <div class="item-details">
           <h3>{{cart?.productName}}</h3>
           <p class="item-description"> {{cart?.description}}</p>
+          <p class="item-description">Quantity added {{cart?.quantity}}</p>
+
           <div class="item-actions">
             <!-- <div class="quantity-selector">
               <button >-</button>
@@ -26,7 +47,7 @@
           </div>
         </div>
         <div class="item-price">
-          <p class="price">{{cart?.price}}</p>
+          <p class="price">{{cart?.price | currency : "INR" : true}}</p>
           <p class="unit-price" > {{cart?.price}}each</p>
         </div>
       </div>
@@ -47,19 +68,19 @@
     <h2>Order Summary</h2>
     <div class="summary-row">
       <span>Subtotal</span>
-      <span>{{subtotal | currency}}</span>
+      <span>{{subtotal | currency : "INR" : true}}</span>
     </div>
     <div class="summary-row">
       <span>Shipping</span>
-      <span>{{shipping | currency}}</span>
+      <span>{{shipping | currency : "INR" : true}}</span>
     </div>
     <div class="summary-row">
       <span>Tax</span>
-      <span>{{tax | currency}}</span>
+      <span>{{tax | currency : "INR" : true}}</span>
     </div>
     <div class="summary-row total">
       <span>Total</span>
-      <span>{{total | currency}}</span>
+      <span>{{total | currency : "INR" : true}}</span>
     </div>
     <button class="primary-btn checkout-btn">Proceed to Checkout</button>
     <button routerLink="/products" class="secondary-btn">Continue Shopping</button>

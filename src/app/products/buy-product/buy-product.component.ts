@@ -1,9 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductServices } from '../services/product services';
-import { debounceTime, map } from 'rxjs';
+import { Observable, debounceTime, map, of } from 'rxjs';
 import { CartService } from '../services/cart-service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { fetchFileType } from '../services/file-validator';
 interface CartItem {
   id: string;
   name: string;
@@ -23,7 +24,8 @@ export class BuyProductComponent implements OnInit{
   product:any;
   cartItems:any[]=[]
   @ViewChild('quantityField') quantityField:any
-  constructor(private route:ActivatedRoute,private router:Router,private productService:ProductServices,
+  constructor(private route:ActivatedRoute,private router:Router,
+    private productService:ProductServices,
     private modalService:NgbModal,
     private cartService:CartService){}
   ngOnInit(): void {
@@ -35,10 +37,12 @@ export class BuyProductComponent implements OnInit{
   taxRate = 0.08;
 
   get subtotal(): number {
-    return this.cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+     return this.cartItems.reduce((sum,item)=>sum + (item.price * item.quantity),0)
   }
 
   get tax(): number {    
+    console.log(this.subtotal,"sub");
+    
     return this.subtotal * this.taxRate;
   }
 
@@ -69,9 +73,7 @@ else{
 
 }
 }
-  removeItem(item: CartItem): void {
-    this.cartItems = this.cartItems.filter(i => i.id !== item.id);
-  }
+
  
   navigateToProductDetail(){
    this.router.navigate(['/products/dashboard'])
@@ -84,7 +86,7 @@ else{
       if(parsed.status == 1015){
         this.cartItems = []
       }
-      else if(parsed.status == 1016){
+       if(parsed.status == 1016){
         this.cartItems = parsed?.cartItems    
       }
     })
@@ -123,5 +125,12 @@ else{
     this.presentQuantity = this.cartItems[id].quantity
     this.presentObjectId = this.cartItems[id]._id
   }
- 
+  fetchFileType(image:any):Observable<string>{
+  
+    return of(fetchFileType(image))
+     }
+     bypassSecurity(file:string){    
+      console.log(file,"file")
+      return this.productService.bypassSecurity(file)
+    }
 }
