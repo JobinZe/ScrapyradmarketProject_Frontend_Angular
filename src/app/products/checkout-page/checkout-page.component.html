@@ -1,38 +1,111 @@
 <div class="payment-container">
-    <h2 class="title">Payment Gateway</h2>
-  
-    <div class="payment-form">
-      <form>
-        <div class="section">
-          <h3>Billing Information</h3>
-          <input type="text" placeholder="Full Name" required />
-          <input type="email" placeholder="Email Address" required />
-          <input type="text" placeholder="Address" required />
-          <input type="text" placeholder="City" required />
-          <input type="text" placeholder="ZIP Code" required />
-        </div>
-  
-        <div class="section">
-          <h3>Payment Method</h3>
-          <input type="text" placeholder="Card Number" required />
-          <input type="text" placeholder="Cardholder Name" required />
-          <div class="row">
-            <input type="text" placeholder="Expiry (MM/YY)" required />
-            <input type="text" placeholder="CVV" required />
-          </div>
-        </div>
-  
-        <div class="summary">
-          <h3>Order Summary</h3>
-          <p>Subtotal: <strong>$2,112.00</strong></p>
-          <p>Shipping: <strong>$5.99</strong></p>
-          <p>Tax: <strong>$168.96</strong></p>
-          <hr />
-          <p class="total">Total: <strong>$2,286.95</strong></p>
-        </div>
-  
-        <button type="submit" class="pay-btn">Pay Now</button>
-      </form>
-    </div>
+  <div class="payment-header">
+      <h2 class="title">Complete Your Purchase</h2>
+     
   </div>
-  
+
+  <div class="payment-form">
+      <form>
+          <div class="form-section">
+              <h3 class="section-title">
+                  <span class="icon">📍</span>
+                  Billing Information
+              </h3>
+              <div class="input-group">
+                  <label>Full Name</label>
+                  <input type="text" placeholder="John Doe" required />
+              </div>
+              <div class="input-group">
+                  <label>Email Address</label>
+                  <input type="email" placeholder="john@example.com" required />
+              </div>
+              <div class="input-group">
+                  <label>Street Address</label>
+                  <input type="text" placeholder="123 Main St" required />
+              </div>
+              <div class="row">
+                  <div class="input-group">
+                      <label>City</label>
+                      <input type="text" placeholder="New York" required />
+                  </div>
+                  <div class="input-group">
+                      <label>ZIP Code</label>
+                      <input type="text" placeholder="10001" required />
+                  </div>
+              </div>
+          </div>
+
+          <div class="form-section">
+              <h3 class="section-title">
+                  <span class="icon">💳</span>
+                  Payment Method
+              </h3>
+              <div class="payment-methods">
+                  <div class="method active">
+                      <div class="radio"></div>
+                      <div class="method-icon">💳</div>
+                      <span>Credit Card</span>
+                  </div>
+                  <div class="method">
+                      <div class="radio"></div>
+                      <div class="method-icon">📱</div>
+                      <span>PayPal</span>
+                  </div>
+              </div>
+              <div class="input-group">
+                  <label>Card Number</label>
+                  <input type="text" placeholder="1234 5678 9012 3456" required />
+              </div>
+              <div class="input-group">
+                  <label>Cardholder Name</label>
+                  <input type="text" placeholder="John Doe" required />
+              </div>
+              <div class="row">
+                  <div class="input-group">
+                      <label>Expiry Date</label>
+                      <input type="text" placeholder="MM/YY" required />
+                  </div>
+                  <div class="input-group">
+                      <label>CVV</label>
+                      <input type="text" placeholder="123" required />
+                      <div class="cvv-hint">3 digits on back</div>
+                  </div>
+              </div>
+          </div>
+
+          <div class="order-summary">
+              <h3 class="section-title">
+                  <span class="icon">📦</span>
+                  Order Summary
+              </h3>
+              <div class="summary-item">
+                  <span>Subtotal</span>
+                  <span>$2,112.00</span>
+              </div>
+              <div class="summary-item">
+                  <span>Shipping</span>
+                  <span>$5.99</span>
+              </div>
+              <div class="summary-item">
+                  <span>Tax</span>
+                  <span>$168.96</span>
+              </div>
+              <div class="summary-total">
+                  <span>Total</span>
+                  <span>$2,286.95</span>
+              </div>
+          </div>
+
+          <div class="form-footer">
+              <button type="submit" class="pay-btn">
+                  <span class="lock-icon">🔒</span>
+                  Pay Securely
+              </button>
+              <div class="secure-payment">
+                  <div class="shield-icon">🛡️</div>
+                  <span>All transactions are secure and encrypted</span>
+              </div>
+          </div>
+      </form>
+  </div>
+</div>

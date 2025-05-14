@@ -40,9 +40,7 @@ export class BuyProductComponent implements OnInit{
      return this.cartItems.reduce((sum,item)=>sum + (item.price * item.quantity),0)
   }
 
-  get tax(): number {    
-    console.log(this.subtotal,"sub");
-    
+  get tax(): number {        
     return this.subtotal * this.taxRate;
   }
 
