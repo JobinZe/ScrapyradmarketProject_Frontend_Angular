@@ -10,6 +10,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AfterLoginComponent } from './after-login/after-login.component';
 import { SessionExpiredComponent } from './session-expired/session-expired.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FooterComponent } from './footer/footer.component';
 
 
 
@@ -20,7 +21,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     OfflineComponent,
     AfterLoginComponent,
     SessionExpiredComponent,
-    ErrorComponent
+    ErrorComponent,
+    FooterComponent,
 
   ],
   imports: [
@@ -38,8 +40,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     OfflineComponent,
     ForgotPasswordComponent,
     AfterLoginComponent,
-    SessionExpiredComponent
-
+    SessionExpiredComponent,
+    FooterComponent
   ]
 })
 export class CommonModules { }

@@ -8,12 +8,20 @@
         <div class="mb-3">
           <label class="form-label">Product Name</label>
           <input type="text" class="form-control" placeholder="Enter product name" formControlName="productName">
+          <span class="text-danger" *ngIf="addProductForm.get('productName')?.touched || addProductForm.get('productName')?.dirty">
+            <span *ngIf="addProductForm.get('productName')?.errors?.['required']">Please enter Product Name</span>
+          </span>
         </div>
   
         <!-- Price -->
         <div class="mb-3">
           <label class="form-label">Price</label>
           <input type="number" class="form-control" placeholder="Enter price"  formControlName="price">
+          <span class="text-danger" *ngIf="addProductForm.get('price')?.touched || addProductForm.get('price')?.dirty">
+            <span *ngIf="addProductForm.get('price')?.errors?.['required']">Please enter Product Name</span>
+            <span *ngIf="addProductForm.get('price')?.errors?.['patterm']">Please enter numeric values</span>
+
+          </span>
         </div>
   
         <!-- Category Dropdown -->
@@ -27,7 +35,11 @@
                     <option [value]="item._id">{{item?.category}}</option>
                   }
                 </select>
+                <span class="text-danger" *ngIf="addProductForm.get('categoryValues')?.touched || addProductForm.get('categoryValues')?.dirty">
+                  <span *ngIf="addProductForm.get('price')?.errors?.['required']">Please enter category values</span>    
+                </span>
               </div>
+             
         }
        @else{
             <button type="button"  class="btn btn-primary ms-2 mb-4 ml-4" (click)="openCategoryModal()">
@@ -37,8 +49,10 @@
         <div class="mb-3">
           <label class="form-label">Quantity</label>
           <input class="form-control" placeholder="Enter quantity" formControlName="quantity">
-          <span class="text-danger">
-            <span class="text-danger" *ngIf="addProductForm.get('quantity')?.errors?.['pattern']">Only numbers are allowed</span>
+          <span class="text-danger" *ngIf="addProductForm.get('quantity')?.['touched'] || addProductForm.get('quantity')?.['dirty']">
+            <span  *ngIf="addProductForm.get('quantity')?.errors?.['required']">Please enter Quantity</span>
+
+            <span *ngIf="addProductForm.get('quantity')?.errors?.['pattern']">Only numbers are allowed</span>
           </span>
         </div>
   
@@ -47,6 +61,9 @@
         <div class="mb-3">
           <label class="form-label">Description</label>
           <textarea class="form-control" placeholder="Enter product description" formControlName="description"></textarea>
+          <span class="text-danger" *ngIf="addProductForm.get('description')?.['touched'] || addProductForm.get('description')?.['dirty']">
+            <span class="text-danger" *ngIf="addProductForm.get('description')?.errors?.['required']">Please enter Description</span>
+          </span>
         </div>
   
         <!-- File Upload -->
@@ -55,14 +72,19 @@
         
           <!-- Show file input if no image is set or after deletion -->
           <ng-container *ngIf="!isUpdatePage || (imageDeleted && isUpdatePage); else showUploadedFile">
-            <input type="file" class="form-control" (change)="uploadFile($event)">
+            <input type="file" class="form-control" (change)="uploadFile($event)" formControlName="image">
+            <span class="text-danger" *ngIf="addProductForm.get('image')?.['touched'] || addProductForm.get('image')?.['dirty']">
+              <span class="text-danger" *ngIf="addProductForm.get('image')?.errors?.['required']">Please upload Image</span>
+              <span class="text-danger" *ngIf="addProductForm.get('image')?.errors?.['invalidFileType'] && !addProductForm.get('image')?.errors?.['required']">Please upload PDF, XLSX, PNG, JPEG</span>
+
+            </span>
           </ng-container>
         
           <!-- Uploaded file display -->
           <ng-template #showUploadedFile>
             <div class="d-flex align-items-center justify-content-between mt-2 border rounded p-2 bg-light">
               <a href="#" target="_blank" class="text-decoration-none">
-                {{ productObj.image }}
+                {{ productObj?.image }}
               </a>
               <button type="button" class="btn btn-sm btn-danger ms-2" (click)="deleteImage()">
                 &times;

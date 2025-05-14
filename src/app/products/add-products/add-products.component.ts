@@ -5,6 +5,7 @@ import { ProductServices } from '../services/product services';
 import { CategoryModel } from '../models/category.model';
 import { ActivatedRoute, NavigationExtras, ParamMap, Router } from '@angular/router';
 import { debounceTime } from 'rxjs';
+import { checkValidity } from '../services/file-validator';
 
 @Component({
   selector: 'app-add-products',
@@ -32,11 +33,11 @@ constructor( private modalService: NgbModal,private fb:FormBuilder,private produ
   })
   this.addProductForm = this.fb.group({
     productName:[null,[Validators.required]],
-    price:[null,[Validators.required]],
+    price:[null,[Validators.required,Validators.pattern('^[0-9]*$')]],
     categoryValues:[null,[Validators.required]],
-    quantity:[null,[Validators.pattern('^[0-9]*$')]],
+    quantity:[null,[Validators.required,Validators.pattern('^[0-9]*$')]],
     description:[null,[Validators.required]],
-    image:[null,[Validators.required]]
+    image:[null,[Validators.required,checkValidity]]
   });
   console.log(this.router.url.indexOf('update-product'),"Sssssssssssss")
   if(this.router.url.indexOf('update-product') != -1){
@@ -88,6 +89,10 @@ console.log(this.selectedFile,this.addProductForm);
 this.formData.append('image',this.selectedFile)
 }
 onSubmit(){
+  if(this.addProductForm.invalid){
+    this.addProductForm.markAllAsTouched()
+    return
+  }
 this.formData.append('productName',JSON.stringify(this.addProductForm.get('productName')?.value))
 this.formData.append('price',JSON.stringify(this.addProductForm.get('price')?.value))
 this.formData.append('categoryValues',JSON.stringify(Number(this.addProductForm.get('categoryValues')?.value)))
@@ -111,6 +116,10 @@ this.productService.submitProduct(this.formData).subscribe({
 })
 }
 updateProduct(){
+  if(this.addProductForm.invalid){
+    this.addProductForm.markAllAsTouched()
+    return
+  }
   this.formData.append('productName',JSON.stringify(this.addProductForm.get('productName')?.value))
   this.formData.append('price',JSON.stringify(this.addProductForm.get('price')?.value))
   this.formData.append('categoryValues',JSON.stringify(Number(this.addProductForm.get('categoryValues')?.value)))
