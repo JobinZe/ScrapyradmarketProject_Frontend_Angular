@@ -82,7 +82,7 @@
       <span>Total</span>
       <span>{{total | currency : "INR" : true}}</span>
     </div>
-    <button class="primary-btn checkout-btn" [routerLink]="'/products/checkout'">Proceed to Checkout</button>
+    <button class="primary-btn checkout-btn" (click)="submitCheckOut()">Proceed to Checkout</button>
     <button routerLink="/products" class="secondary-btn">Continue Shopping</button>
   </div>
 </div>

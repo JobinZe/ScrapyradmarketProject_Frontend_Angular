@@ -1,10 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { ProductServices } from '../services/product services';
 import { Observable, debounceTime, map, of } from 'rxjs';
 import { CartService } from '../services/cart-service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { fetchFileType } from '../services/file-validator';
+import { CheckoutService } from '../services/checkout-services';
 interface CartItem {
   id: string;
   name: string;
@@ -24,10 +25,11 @@ export class BuyProductComponent implements OnInit{
   product:any;
   cartItems:any[]=[]
   @ViewChild('quantityField') quantityField:any
-  constructor(private route:ActivatedRoute,private router:Router,
+  constructor(private router:Router,
     private productService:ProductServices,
     private modalService:NgbModal,
-    private cartService:CartService){}
+    private cartService:CartService,
+    private checkoutService:CheckoutService){}
   ngOnInit(): void {
    this.getCartDetails()
   }
@@ -131,4 +133,20 @@ else{
       console.log(file,"file")
       return this.productService.bypassSecurity(file)
     }
+  submitCheckOut(){
+    let data = {
+      subtotal:this.subtotal,
+      shipping:this.shipping,
+      tax:this.tax,
+      totalAmount:this.total
+    }
+    this.checkoutService.checkOutApi(data).subscribe((response:any)=>{
+      if(response.status==1024){
+        const navigationExtras:NavigationExtras = {state:{data:{msg:"Price saved to checkout",
+        showAlert:true,
+       alertType:"success"}}}
+        this.router.navigate(['/products/checkout'],navigationExtras)
+      }
+    })
+  }
 }

@@ -1,5 +1,7 @@
 <div class="payment-container">
   <div class="payment-header">
+    <ngb-alert *ngIf="showAlert" [type]="alertType" (closed)="!showAlert">{{message}}</ngb-alert>
+
       <h2 class="title">Complete Your Purchase</h2>
      
   </div>
@@ -80,19 +82,19 @@
               </h3>
               <div class="summary-item">
                   <span>Subtotal</span>
-                  <span>$2,112.00</span>
+                  <span>{{checkoutDetails?.subtotal | currency : "INR" : true }}</span>
               </div>
               <div class="summary-item">
                   <span>Shipping</span>
-                  <span>$5.99</span>
+                  <span>{{checkoutDetails?.shipping | currency : "INR" : true}}</span>
               </div>
               <div class="summary-item">
                   <span>Tax</span>
-                  <span>$168.96</span>
+                  <span>{{checkoutDetails?.tax | currency : "INR" : true}}</span>
               </div>
               <div class="summary-total">
                   <span>Total</span>
-                  <span>$2,286.95</span>
+                  <span>{{checkoutDetails?.totalAmount | currency : "INR" : true}}</span>
               </div>
           </div>
 
