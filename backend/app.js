@@ -3,6 +3,7 @@ const cors = require('cors');
 const authRoute = require('./routes/user.route');
 const productRoute = require('./routes/product.route')
 const cartRoute = require('./routes/cart-route');
+const checkOutRoute = require('./routes/checkout-route');
 const mongoose = require('mongoose');
 const path = require('path');
 
@@ -30,4 +31,5 @@ app.use((req, res, next) => {
 app.use('/api/auth', authRoute);
 app.use('/api/products', productRoute);
 app.use('/api/cart', cartRoute);
+app.use('/api/checkout', checkOutRoute)
 module.exports = app;
