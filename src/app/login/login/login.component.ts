@@ -19,10 +19,9 @@ export class LoginComponent implements OnInit{
   constructor(private authService:UserRegistrationService,private fb:FormBuilder,private route:ActivatedRoute,
     private store:Store,
     private router:Router){
-      const navigation = this.router.getCurrentNavigation();
-      console.log(navigation,"nav><");
-      
+      const navigation = this.router.getCurrentNavigation();      
      this.message = navigation?.extras?.state?.['data']?.['msg']
+     
 
       if(this.message){
         this.showAlert=true

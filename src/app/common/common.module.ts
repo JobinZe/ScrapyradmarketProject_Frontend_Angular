@@ -6,11 +6,12 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { ErrorComponent } from './error/error.component';
 import { OfflineComponent } from './offline/offline.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AfterLoginComponent } from './after-login/after-login.component';
 import { SessionExpiredComponent } from './session-expired/session-expired.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FooterComponent } from './footer/footer.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 
 
@@ -23,6 +24,7 @@ import { FooterComponent } from './footer/footer.component';
     SessionExpiredComponent,
     ErrorComponent,
     FooterComponent,
+    ResetPasswordComponent
 
   ],
   imports: [
@@ -30,6 +32,7 @@ import { FooterComponent } from './footer/footer.component';
     CommonModule,
     CommonRouterModule,
     ReactiveFormsModule,
+    FormsModule,
     NgbModule
   ],
   exports:[
