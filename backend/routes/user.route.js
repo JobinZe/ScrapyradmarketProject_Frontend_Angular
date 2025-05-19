@@ -4,7 +4,8 @@ const router = express.Router();
 const UserModel = require('../models/user.model');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
-const verifyToken = require('../middlewares/tokenverification')
+const verifyToken = require('../middlewares/tokenverification');
+const userController = require('../controllers/user-controller')
 // Register API Route
 router.post('/register', async (req, res) => {
   console.log("Entered Register API");
@@ -85,7 +86,7 @@ router.post('/forgot-password',async(req,res)=>{
     }
   })
 
-  const resetLink=`http://localhost:4200/reset-password/${token}`;
+  const resetLink=`http://localhost:4200/common/reset-password/${token}`;
   const mailOptions={
     from:process.env.EMAIL_USER,
     to:email,
@@ -104,4 +105,5 @@ catch(err){
 router.post('/authorization',verifyToken,(req,res)=>{
   res.status(200).json({message:"Valid Token"})
 })
+router.post('/reset-password/:token',userController.resetPassword)
 module.exports = router;
