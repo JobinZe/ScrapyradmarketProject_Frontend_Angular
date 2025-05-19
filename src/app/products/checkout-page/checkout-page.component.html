@@ -7,7 +7,7 @@
   </div>
 
   <div class="payment-form">
-      <form>
+      <form [formGroup]="paymentForm">
           <div class="form-section">
               <h3 class="section-title">
                   <span class="icon">📍</span>
@@ -15,24 +15,40 @@
               </h3>
               <div class="input-group">
                   <label>Full Name</label>
-                  <input type="text" placeholder="John Doe" required />
+                  <input type="text" formControlName="fullName" />
+                  <span class="text-danger" *ngIf="paymentForm.get('fullName')?.touched || paymentForm.get('fullName')?.dirty">
+                    <span *ngIf="paymentForm.get('fullName')?.errors?.['required']">Please enter Full Name</span>
+                  </span>
+                  
               </div>
               <div class="input-group">
                   <label>Email Address</label>
-                  <input type="email" placeholder="john@example.com" required />
+                  <input type="email"  formControlName="emailAddress" />
+                  <span class="text-danger" *ngIf="paymentForm.get('emailAddress')?.touched || paymentForm.get('emailAddress')?.dirty">
+                    <span *ngIf="paymentForm.get('emailAddress')?.errors?.['required']">Please enter Email Id</span>
+                  </span>
               </div>
               <div class="input-group">
                   <label>Street Address</label>
-                  <input type="text" placeholder="123 Main St" required />
+                  <input type="text"  formControlName="streetAddress" />
+                  <span class="text-danger" *ngIf="paymentForm.get('streetAddress')?.touched || paymentForm.get('streetAddress')?.dirty">
+                    <span *ngIf="paymentForm.get('streetAddress')?.errors?.['required']">Please enter Street Address</span>
+                  </span>
               </div>
               <div class="row">
                   <div class="input-group">
                       <label>City</label>
-                      <input type="text" placeholder="New York" required />
+                      <input type="text" formControlName="city" />
+                      <span class="text-danger" *ngIf="paymentForm.get('city')?.touched || paymentForm.get('city')?.dirty">
+                        <span *ngIf="paymentForm.get('city')?.errors?.['required']">Please enter City</span>
+                      </span>
                   </div>
                   <div class="input-group">
                       <label>ZIP Code</label>
-                      <input type="text" placeholder="10001" required />
+                      <input type="text" formControlName="zipCode" />
+                      <span class="text-danger" *ngIf="paymentForm.get('zipCode')?.touched || paymentForm.get('zipCode')?.dirty">
+                        <span *ngIf="paymentForm.get('zipCode')?.errors?.['required']">Please enter Zip Code</span>
+                      </span>
                   </div>
               </div>
           </div>
@@ -42,35 +58,54 @@
                   <span class="icon">💳</span>
                   Payment Method
               </h3>
-              <div class="payment-methods">
-                  <div class="method active">
-                      <div class="radio"></div>
-                      <div class="method-icon">💳</div>
-                      <span>Credit Card</span>
-                  </div>
-                  <div class="method">
-                      <div class="radio"></div>
-                      <div class="method-icon">📱</div>
-                      <span>PayPal</span>
-                  </div>
-              </div>
+             <!-- Update your template -->
+<div class="payment-methods">
+    <div class="method" 
+         [class.active]="selectedMethod === 'card'"
+         (click)="setValueforPM('card')">
+        <div class="radio"></div>
+        <div class="method-icon">💳</div>
+        <span>Card</span>
+    </div>
+    <div class="method"
+         [class.active]="selectedMethod === 'COD'"
+         (click)="setValueforPM('COD')">
+        <div class="radio"></div>
+        <div class="method-icon">📱</div>
+        <span>Cash on Delivery</span>
+    </div>
+</div>
               <div class="input-group">
                   <label>Card Number</label>
-                  <input type="text" placeholder="1234 5678 9012 3456" required />
+                  <input type="text"  formControlName="cardNumber" />
+                  <span class="text-danger" *ngIf="paymentForm.get('cardNumber')?.touched || paymentForm.get('cardNumber')?.dirty">
+                    <span *ngIf="paymentForm.get('cardNumber')?.errors?.['required']">Please enter Card Number</span>
+                  </span>
               </div>
               <div class="input-group">
                   <label>Cardholder Name</label>
-                  <input type="text" placeholder="John Doe" required />
+                  <input type="text" formControlName="cardHolder" />
+                  <span class="text-danger" *ngIf="paymentForm.get('cardNumber')?.touched || paymentForm.get('cardNumber')?.dirty">
+                    <span *ngIf="paymentForm.get('cardNumber')?.errors?.['required']">Please enter Cardholder Name</span>
+                  </span>
               </div>
               <div class="row">
                   <div class="input-group">
                       <label>Expiry Date</label>
-                      <input type="text" placeholder="MM/YY" required />
+                      <input class="form-group" type="text" formControlName="expiryDate"  />
+                      <span class="text-danger" *ngIf="paymentForm.get('expiryDate')?.touched || paymentForm.get('expiryDate')?.dirty">
+                        <span *ngIf="paymentForm.get('expiryDate')?.errors?.['required']">Please enter Expiry Date</span>
+                      </span>
                   </div>
                   <div class="input-group">
                       <label>CVV</label>
-                      <input type="text" placeholder="123" required />
-                      <div class="cvv-hint">3 digits on back</div>
+                      <input type="text" formControlName="cvv"  />
+                      <span class="text-danger" *ngIf="paymentForm.get('cvv')?.touched || paymentForm.get('cvv')?.dirty">
+                        <span *ngIf="paymentForm.get('cvv')?.errors?.['required']">Please enter CVV</span>
+                        <span *ngIf="paymentForm.get('cvv')?.errors?.['maxlength']">Maximum 3 digits are allowed</span>
+                        <span *ngIf="paymentForm.get('cvv')?.errors?.['pattern']">Only numbers are allowed</span>
+
+                      </span>
                   </div>
               </div>
           </div>
@@ -99,7 +134,7 @@
           </div>
 
           <div class="form-footer">
-              <button type="submit" class="pay-btn">
+              <button type="submit" class="pay-btn" (click)="submitPayment()">
                   <span class="lock-icon">🔒</span>
                   Pay Securely
               </button>

@@ -8,6 +8,17 @@
   --bg-light: #f8f9fa;
   --success: #28a745;
 }
+input {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 4px;
+  outline: none;
+}
+
+input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+}
 
 * {
   box-sizing: border-box;
@@ -123,17 +134,11 @@ body {
 .input-group input {
   width: 100%;
   padding: 12px 15px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
   font-size: 15px;
   transition: all 0.3s;
+  box-shadow: 0 0 0 3px rgba(186, 190, 210, 0.2);
 }
 
-.input-group input:focus {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(74, 107, 255, 0.2);
-  outline: none;
-}
 
 .row {
   display: flex;
@@ -151,44 +156,55 @@ body {
   margin-bottom: 20px;
 }
 
+/* Add this to your existing CSS */
 .method {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 15px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: #f8f9fa;
+}
+
+.method:hover {
+    border-color: #4a6bff;
+    background-color: rgba(74, 107, 255, 0.05);
 }
 
 .method.active {
-  border-color: var(--primary);
-  background-color: rgba(74, 107, 255, 0.05);
+    border: 1px solid #4a6bff;
+    background-color: rgba(74, 107, 255, 0.1);
+    box-shadow: 0 0 0 1px #4a6bff;
 }
 
-.method-icon {
-  font-size: 20px;
-}
-
-.radio {
-  width: 16px;
-  height: 16px;
-  border: 1px solid var(--border);
-  border-radius: 50%;
-  position: relative;
+.method.active .radio {
+    border-color: #4a6bff;
 }
 
 .method.active .radio::after {
-  content: '';
-  position: absolute;
-  top: 3px;
-  left: 3px;
-  width: 8px;
-  height: 8px;
-  background-color: var(--primary);
-  border-radius: 50%;
+    content: '';
+    display: block;
+    width: 10px;
+    height: 10px;
+    background-color: #4a6bff;
+    border-radius: 50%;
+    margin: 3px;
+}
+
+.radio {
+    width: 16px;
+    height: 16px;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.method-icon {
+    font-size: 20px;
 }
 
 .cvv-hint {

@@ -8,6 +8,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { BuyProductComponent } from './buy-product/buy-product.component';
 import { CheckoutPageComponent } from './checkout-page/checkout-page.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { PaymentSuccessComponent } from './payment-success/payment-success.component';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     AddProductsComponent,
     DashboardComponent,
     BuyProductComponent,
-    CheckoutPageComponent
+    CheckoutPageComponent,
+    PaymentSuccessComponent
   ],
   imports: [
     RouterModule,
