@@ -5,13 +5,16 @@ import { ErrorComponent } from './error/error.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { SessionExpiredComponent } from './session-expired/session-expired.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { AboutUsComponent } from './about-us/about-us.component';
 
 
 const routes:Routes=[
   {path:'error',component:ErrorComponent},
   {path:'forgot-password',component:ForgotPasswordComponent},
   {path:'reset-password/:token',component:ResetPasswordComponent},
-  {path:'session-expired',component:SessionExpiredComponent}
+  {path:'session-expired',component:SessionExpiredComponent},
+  {path:'about-us',component:AboutUsComponent},
+
 
 ]
 @NgModule({

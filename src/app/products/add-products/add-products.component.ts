@@ -37,7 +37,7 @@ constructor( private modalService: NgbModal,private fb:FormBuilder,private produ
     categoryValues:[null,[Validators.required]],
     quantity:[null,[Validators.required,Validators.pattern('^[0-9]*$')]],
     description:[null,[Validators.required]],
-    image:[null,[Validators.required,checkValidity]]
+    image:[null]
   });
   console.log(this.router.url.indexOf('update-product'),"Sssssssssssss")
   if(this.router.url.indexOf('update-product') != -1){
@@ -84,11 +84,23 @@ this.selectedFile = event.target.files[0]
 if(this.selectedFile.length > 0){
   this.addProductForm.patchValue({'image':this.selectedFile})
 }
-console.log(this.selectedFile,this.addProductForm);
-
+this.checkImageValidity()
 this.formData.append('image',this.selectedFile)
 }
+checkImageValidity(){
+  if((this.isUpdatePage && this.imageDeleted == true) || !this.isUpdatePage){
+    this.addProductForm.get('image')?.markAsTouched()
+    this.addProductForm.get('image')?.setValidators([Validators.required,checkValidity]);
+    this.addProductForm.get('image')?.updateValueAndValidity()
+    }
+    else {
+      this.addProductForm.get('image')?.clearValidators()
+      this.addProductForm.get('image')?.updateValueAndValidity()
+    }
+}
 onSubmit(){
+  console.log(this.addProductForm,"log");
+  this.checkImageValidity()
   if(this.addProductForm.invalid){
     this.addProductForm.markAllAsTouched()
     return
@@ -116,6 +128,8 @@ this.productService.submitProduct(this.formData).subscribe({
 })
 }
 updateProduct(){
+  console.log(this.addProductForm,"log");
+
   if(this.addProductForm.invalid){
     this.addProductForm.markAllAsTouched()
     return
@@ -173,9 +187,11 @@ setValues(){
   this.addProductForm.get('categoryValues')?.patchValue(this.productObj?.categoryValues?._id)
   this.addProductForm.get('description')?.patchValue(this.productObj?.description)
   this.addProductForm.get('quantity')?.patchValue(this.productObj?.quantity)
+  this.addProductForm.get('image')?.clearValidators()
 }
 imageDeleted:boolean=false
 deleteImage(){
-this.imageDeleted = true
+this.imageDeleted = true;
+this.checkImageValidity()
 }
 }

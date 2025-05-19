@@ -1,127 +1,143 @@
-<div class="container mt-4">
-    <div class="card p-4 shadow-sm">
-      <h2 class="text-center mb-3"> {{isUpdatePage ? 'Update Product' : 'Add New Product'}}</h2>
+<div class="product-form-container">
+  <div class="product-form-card">
+    <h2 class="form-title">{{isUpdatePage ? 'Update Product' : 'Add New Product'}}</h2>
   
-      <form [formGroup]="addProductForm" (ngSubmit)=" isUpdatePage ? updateProduct() : onSubmit()">
-        
-        <!-- Product Name -->
-        <div class="mb-3">
-          <label class="form-label">Product Name</label>
-          <input type="text" class="form-control" placeholder="Enter product name" formControlName="productName">
-          <span class="text-danger" *ngIf="addProductForm.get('productName')?.touched || addProductForm.get('productName')?.dirty">
-            <span *ngIf="addProductForm.get('productName')?.errors?.['required']">Please enter Product Name</span>
-          </span>
+    <form [formGroup]="addProductForm" (ngSubmit)="isUpdatePage ? updateProduct() : onSubmit()" class="product-form">
+      <!-- Product Name -->
+      <div class="form-group">
+        <label class="form-label">Product Name</label>
+        <input type="text" class="form-input" placeholder="Enter product name" formControlName="productName">
+        <div class="validation-error" *ngIf="addProductForm.get('productName')?.touched || addProductForm.get('productName')?.dirty">
+          <span *ngIf="addProductForm.get('productName')?.errors?.['required']">Please enter Product Name</span>
         </div>
-  
-        <!-- Price -->
-        <div class="mb-3">
-          <label class="form-label">Price</label>
-          <input type="number" class="form-control" placeholder="Enter price"  formControlName="price">
-          <span class="text-danger" *ngIf="addProductForm.get('price')?.touched || addProductForm.get('price')?.dirty">
-            <span *ngIf="addProductForm.get('price')?.errors?.['required']">Please enter Product Name</span>
-            <span *ngIf="addProductForm.get('price')?.errors?.['patterm']">Please enter numeric values</span>
+      </div>
 
-          </span>
+      <!-- Price -->
+      <div class="form-group">
+        <label class="form-label">Price (₹)</label>
+        <div class="input-with-icon">
+          <span class="input-icon">₹</span>
+          <input type="number" class="form-input" placeholder="Enter price" formControlName="price">
         </div>
-  
-        <!-- Category Dropdown -->
-        @if (category.length > 0){
-            <div class="mb-3">
-                <label class="form-label">Category</label>
-                <select class="form-select" formControlName="categoryValues">
-                <option [value]="null" selected>Please Select</option>
+        <div class="validation-error" *ngIf="addProductForm.get('price')?.touched || addProductForm.get('price')?.dirty">
+          <span *ngIf="addProductForm.get('price')?.errors?.['required']">Please enter Price</span>
+          <span *ngIf="addProductForm.get('price')?.errors?.['pattern']">Please enter numeric values</span>
+        </div>
+      </div>
 
-                  @for(item of category;track item._id){
-                    <option [value]="item._id">{{item?.category}}</option>
-                  }
-                </select>
-                <span class="text-danger" *ngIf="addProductForm.get('categoryValues')?.touched || addProductForm.get('categoryValues')?.dirty">
-                  <span *ngIf="addProductForm.get('price')?.errors?.['required']">Please enter category values</span>    
-                </span>
-              </div>
-             
+      <!-- Category -->
+      <div class="form-group">
+        <label class="form-label">Category</label>
+        @if (category.length > 0) {
+          <div class="select-wrapper">
+            <select class="form-select" formControlName="categoryValues">
+              <option [value]="null" selected>Select Category</option>
+              @for(item of category; track item._id) {
+                <option [value]="item._id">{{item?.category}}</option>
+              }
+            </select>
+            <div class="validation-error" *ngIf="addProductForm.get('categoryValues')?.touched || addProductForm.get('categoryValues')?.dirty">
+              <span *ngIf="addProductForm.get('categoryValues')?.errors?.['required']">Please select category</span>
+            </div>
+          </div>
         }
-       @else{
-            <button type="button"  class="btn btn-primary ms-2 mb-4 ml-4" (click)="openCategoryModal()">
-                Add Category
-              </button>
+        @else {
+          <button type="button" class="add-category-btn" (click)="openCategoryModal()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            Add Category
+          </button>
         }
-        <div class="mb-3">
-          <label class="form-label">Quantity</label>
-          <input class="form-control" placeholder="Enter quantity" formControlName="quantity">
-          <span class="text-danger" *ngIf="addProductForm.get('quantity')?.['touched'] || addProductForm.get('quantity')?.['dirty']">
-            <span  *ngIf="addProductForm.get('quantity')?.errors?.['required']">Please enter Quantity</span>
+      </div>
 
-            <span *ngIf="addProductForm.get('quantity')?.errors?.['pattern']">Only numbers are allowed</span>
-          </span>
+      <!-- Quantity -->
+      <div class="form-group">
+        <label class="form-label">Quantity</label>
+        <input type="text" class="form-input" placeholder="Enter quantity" formControlName="quantity">
+        <div class="validation-error" *ngIf="addProductForm.get('quantity')?.['touched'] || addProductForm.get('quantity')?.['dirty']">
+          <span *ngIf="addProductForm.get('quantity')?.errors?.['required']">Please enter Quantity</span>
+          <span *ngIf="addProductForm.get('quantity')?.errors?.['pattern']">Only numbers are allowed</span>
         </div>
-  
-       
-        <!-- Description -->
-        <div class="mb-3">
-          <label class="form-label">Description</label>
-          <textarea class="form-control" placeholder="Enter product description" formControlName="description"></textarea>
-          <span class="text-danger" *ngIf="addProductForm.get('description')?.['touched'] || addProductForm.get('description')?.['dirty']">
-            <span class="text-danger" *ngIf="addProductForm.get('description')?.errors?.['required']">Please enter Description</span>
-          </span>
+      </div>
+
+      <!-- Description -->
+      <div class="form-group">
+        <label class="form-label">Description</label>
+        <textarea class="form-textarea" placeholder="Enter product description" formControlName="description"></textarea>
+        <div class="validation-error" *ngIf="addProductForm.get('description')?.['touched'] || addProductForm.get('description')?.['dirty']">
+          <span *ngIf="addProductForm.get('description')?.errors?.['required']">Please enter Description</span>
         </div>
-  
-        <!-- File Upload -->
-        <div class="mb-3">
-          <label class="form-label">Upload Product Image</label>
-        
-          <!-- Show file input if no image is set or after deletion -->
+      </div>
+
+      <!-- File Upload -->
+      <div class="form-group">
+        <label class="form-label">Upload Product File</label>
+        <div class="file-upload-container">
           <ng-container *ngIf="!isUpdatePage || (imageDeleted && isUpdatePage); else showUploadedFile">
-            <input type="file" class="form-control" (change)="uploadFile($event)" formControlName="image">
-            <span class="text-danger" *ngIf="addProductForm.get('image')?.['touched'] || addProductForm.get('image')?.['dirty']">
-              <span class="text-danger" *ngIf="addProductForm.get('image')?.errors?.['required']">Please upload Image</span>
-              <span class="text-danger" *ngIf="addProductForm.get('image')?.errors?.['invalidFileType'] && !addProductForm.get('image')?.errors?.['required']">Please upload PDF, XLSX, PNG, JPEG</span>
-
-            </span>
+            <label class="file-upload-label">
+              <input type="file" class="form-control" (change)="uploadFile($event)" formControlName="image">
+              <span>Click to upload or drag and drop</span>
+              <small>PDF, XLSX, PNG, JPEG (Max 5MB)</small>
+            </label>
+            <div class="validation-error" *ngIf="addProductForm.get('image')?.['touched'] || addProductForm.get('image')?.['dirty']">
+              <span *ngIf="addProductForm.get('image')?.errors?.['required']">Please upload file</span>
+              <span *ngIf="addProductForm.get('image')?.errors?.['invalidFileType'] && !addProductForm.get('image')?.errors?.['required']">Please upload PDF, XLSX, PNG, JPEG</span>
+            </div>
           </ng-container>
-        
-          <!-- Uploaded file display -->
+          
           <ng-template #showUploadedFile>
-            <div class="d-flex align-items-center justify-content-between mt-2 border rounded p-2 bg-light">
-              <a href="#" target="_blank" class="text-decoration-none">
-                {{ productObj?.image }}
-              </a>
-              <button type="button" class="btn btn-sm btn-danger ms-2" (click)="deleteImage()">
-                &times;
+            <div class="uploaded-file">
+              <div class="file-info">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4a6bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                  <polyline points="13 2 13 9 20 9"></polyline>
+                </svg>
+                <a href="#" target="_blank" class="file-name">{{ productObj?.image }}</a>
+              </div>
+              <button type="button" class="delete-file-btn" (click)="deleteImage()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
               </button>
             </div>
           </ng-template>
         </div>
-        
+      </div>
 
-  
-        <!-- Submit Button -->
-        <button type="submit" class="btn btn-primary w-100" >
-          Submit
-        </button>
-  
-      </form>
-    </div>
+      <!-- Submit Button -->
+      <button type="submit" class="submit-btn" [disabled]="addProductForm.invalid">
+        {{isUpdatePage ? 'Update Product' : 'Add Product'}}
+      </button>
+    </form>
   </div>
-  <ng-template #categoryModal let-modal>
+</div>
+
+<!-- Category Modal -->
+<ng-template #categoryModal let-modal>
+  <div class="modal-container">
     <div class="modal-header">
-      <h5 class="modal-title">Add Category</h5>
-      <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+      <h5 class="modal-title">Add New Category</h5>
+      <button type="button" class="modal-close-btn" (click)="modal.dismiss()">
+        &times;
+      </button>
     </div>
     <div class="modal-body">
       <form [formGroup]="categoryForm">
-        <div class="mb-3">
+        <div class="form-group">
           <label class="form-label">Category Name</label>
-          <input type="text" class="form-control" formControlName="category" placeholder="Enter category name">
-          <span class="text-danger" *ngIf="categoryForm.get('category')?.touched || categoryForm.get('category')?.dirty">
+          <input type="text" class="form-input" formControlName="category" placeholder="Enter category name">
+          <div class="validation-error" *ngIf="categoryForm.get('category')?.touched || categoryForm.get('category')?.dirty">
             <span *ngIf="categoryForm.get('category')?.errors?.['required']">Please enter category</span>
-
-          </span>
+          </div>
         </div>
       </form>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
-      <button class="btn btn-success" (click)="addCategory()">Add</button>
+      <button class="modal-btn secondary" (click)="modal.dismiss()">Cancel</button>
+      <button class="modal-btn primary" (click)="addCategory()" [disabled]="categoryForm.invalid">Add Category</button>
     </div>
-  </ng-template>
+  </div>
+</ng-template>

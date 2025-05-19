@@ -1,30 +1,37 @@
-<div class="container mt-4">
-  <ngb-alert *ngIf="showAlert" [type]="alertType" (closed)="!showAlert">{{message}}</ngb-alert>
+<div class="dashboard-container">
+  <ngb-alert *ngIf="showAlert" [type]="alertType" (closed)="showAlert = false" class="dashboard-alert">
+    {{message}}
+  </ngb-alert>
 
-  <h2 class="text-center mb-4">Product Dashboard</h2>
-
-  <!-- Controls -->
-  <div class="row align-items-center mb-3">
-    <div class="col-md-6" [formGroup]="searchForm">
-      <input
-        type="text"
-        class="form-control"
-        placeholder="Search products..."
-        formControlName="searchController"
-        (input)="checkKeyWord()"
-      />
-    </div>
-    <div class="col-md-6 text-md-end mt-2 mt-md-0">
-      <button (click)="navigateToProduct()" class="btn btn-primary">
+  <div class="dashboard-header">
+    <h2 class="dashboard-title">Product Dashboard</h2>
+    <div class="dashboard-controls">
+      <div class="search-container" [formGroup]="searchForm">
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Search products..."
+          formControlName="searchController"
+          (input)="checkKeyWord()"
+        />
+        <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </div>
+      <button class="add-product-btn" (click)="navigateToProduct()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
         Add Product
       </button>
     </div>
   </div>
 
-  <!-- Table Wrapper for Responsive Design -->
-  <div class="table-responsive shadow rounded">
-    <table class="table table-bordered table-hover">
-      <thead class="table-primary text-center">
+  <div class="product-table-container">
+    <table class="product-table">
+      <thead>
         <tr>
           <th>ID</th>
           <th>Name</th>
@@ -37,139 +44,111 @@
         </tr>
       </thead>
       <tbody>
-        <ng-container *ngIf="!isSearchAdded" >
-        @if(product$  | async; as products) {
-          @if (products.updatedProduct.length > 0) {
-          @for(product of products.updatedProduct; track product._id; let i = $index) {       
-            <tr>
-              <td class="text-center">{{ i + 1 }}</td>
-              <td>
-                <a
-                  [routerLink]="['/products/product-detail', product._id]"
-                  class="text-primary fw-bold text-decoration-none"
-                >
-                  {{ product?.productName }}
-                </a>
-              </td>
-              <td class="text-center">{{ product?.price | currency: 'INR' : true  }}</td>
-              <td class="text-center">{{ product?.categoryValues?.category }}</td>
-              <td class="text-center">{{ product?.quantity }}</td>
-
-              @if(fetchFileType(i) | async; as fileType) {
-                <td class="text-center">
-                  <ng-container *ngIf="fileType == 'image'; else documentView">
-                    <img
-                      [src]="product?.imageUrl"
-                      alt="File Preview"
-                      class="img-fluid rounded shadow-sm"
-                      style="max-width: 80px; max-height: 80px;"
-                    />
-                  </ng-container>
-                  <ng-template #documentView>
-                    <iframe
-                      title="file"
-                      [src]="bypassSecurity(product.imageUrl)"
-                      class="rounded shadow-sm"
-                      style="width: 120px; height: 80px;"
-                    ></iframe>
-                  </ng-template>
-                </td>
+        <ng-container *ngIf="!isSearchAdded">
+          @if(product$ | async; as products) {
+            @if (products.updatedProduct.length > 0) {
+              @for(product of products.updatedProduct; track product._id; let i = $index) {
+                <tr>
+                  <td>{{ i + 1 }}</td>
+                  <td>
+                    <a [routerLink]="['/products/product-detail', product._id]" class="product-link">
+                      {{ product?.productName }}
+                    </a>
+                  </td>
+                  <td>{{ product?.price | currency: 'INR' : true }}</td>
+                  <td>{{ product?.categoryValues?.category }}</td>
+                  <td>{{ product?.quantity }}</td>
+                  @if(fetchFileType(i) | async; as fileType) {
+                    <td>
+                      <ng-container *ngIf="fileType == 'image'; else documentView">
+                        <img [src]="product?.imageUrl" alt="Product image" class="product-image">
+                      </ng-container>
+                      <ng-template #documentView>
+                        <iframe [src]="bypassSecurity(product.imageUrl)" class="document-preview"></iframe>
+                      </ng-template>
+                    </td>
+                  }
+                  <td class="description-cell">{{ product?.description }}</td>
+                  <td class="action-cell">
+                    @if(userDetails.type == 1){
+                      <button class="action-btn buy-btn" (click)="goToCart(i)">Buy</button>
+                    }
+                    @else {
+                      <button class="action-btn update-btn" [routerLink]="['/products/update-products/',product._id]">Update</button>
+                      <button class="action-btn delete-btn" (click)="deleteProduct(product._id)">Delete</button>
+                    }
+                  </td>
+                </tr>
               }
-              <td>{{ product?.description }}</td>
-              <td>
-                @if(userDetails.type == 1){
-                  <button class="btn btn-primary" (click)="goToCart(i)">Buy</button>
-                }
-                @else {
-                  <button class="btn btn-success mb-3" [routerLink]="['/products/update-products/',product._id]">Update Product</button>
-                  <br>
-                  <button class="btn btn-danger" (click)="deleteProduct(product._id)">Delete Product</button>
-                }
-              </td>
-            </tr>
-            }  
+            }
+            @else {
+              <tr class="empty-row">
+                <td colspan="8">No records found</td>
+              </tr>
+            }
           }
           @else {
-            <tr>
-            <td colspan="7"> <p class="text-center">No records found</p></td>
+            <tr class="loading-row">
+              <td colspan="8">Loading...</td>
             </tr>
           }
-        }
-        @else {
-          <tr>
-            <td colspan="6" class="text-center py-3">Loading...</td>
-          </tr>
-        }
-      </ng-container>
-      <ng-container *ngIf="isSearchAdded" >
-        @if(productType$  | async; as prod) {
-          @if (prod.length > 0) {
-          @for(product of prod; track product._id; let i = $index) {
-            <tr>
-              <td class="text-center">{{ i + 1 }}</td>
-              <td>
-                <a
-                  [routerLink]="['/products/product-detail', product._id]"
-                  class="text-primary fw-bold text-decoration-none"
-                >
-                  {{ product?.productName }}
-                </a>
-              </td>
-              <td class="text-center">{{ product?.price | currency: 'INR' : true  }}</td>
-              <td class="text-center">{{ product?.categoryValues?.category }}</td>
-              <td class="text-center">{{ product?.quantity }}</td>
-              @if(fetchFileTypeForSearch(prod,i) | async; as fileType) {
-                <td class="text-center">
-                  <ng-container *ngIf="fileType == 'image'; else documentView">
-                    <img
-                      [src]="product?.imageUrl"
-                      alt="File Preview"
-                      class="img-fluid rounded shadow-sm"
-                      style="max-width: 80px; max-height: 80px;"
-                    />
-                  </ng-container>
-                  <ng-template #documentView>
-                    <iframe
-                      title="file"
-                      [src]="bypassSecurity(product?.imageUrl)"
-                      class="rounded shadow-sm"
-                      style="width: 120px; height: 80px;"
-                    ></iframe>
-                  </ng-template>
-                </td>
-              }
-              <td>{{ product?.description }}</td>
-              <td>
-                @if(userDetails.type == 1){
-                  <button class="btn btn-primary" (click)="goToCart(i)">Buy</button>
-                }
-                @else {
-                  <button class="btn btn-success mb-3"  [routerLink]="['/products/update-products/',product._id]">Update Product</button>
-                  <br>
-                  <button class="btn btn-danger" (click)="deleteProduct(product._id)">Delete Product</button>
+        </ng-container>
 
-                }
-              </td>
+        <ng-container *ngIf="isSearchAdded">
+          @if(productType$ | async; as prod) {
+            @if (prod.length > 0) {
+              @for(product of prod; track product._id; let i = $index) {
+                <tr>
+                  <td>{{ i + 1 }}</td>
+                  <td>
+                    <a [routerLink]="['/products/product-detail', product._id]" class="product-link">
+                      {{ product?.productName }}
+                    </a>
+                  </td>
+                  <td>{{ product?.price | currency: 'INR' : true }}</td>
+                  <td>{{ product?.categoryValues?.category }}</td>
+                  <td>{{ product?.quantity }}</td>
+                  @if(fetchFileTypeForSearch(prod,i) | async; as fileType) {
+                    <td>
+                      <ng-container *ngIf="fileType == 'image'; else documentView">
+                        <img [src]="product?.imageUrl" alt="Product image" class="product-image">
+                      </ng-container>
+                      <ng-template #documentView>
+                        <iframe [src]="bypassSecurity(product?.imageUrl)" class="document-preview"></iframe>
+                      </ng-template>
+                    </td>
+                  }
+                  <td class="description-cell">{{ product?.description }}</td>
+                  <td class="action-cell">
+                    @if(userDetails.type == 1){
+                      <button class="action-btn buy-btn" (click)="goToCart(i)">Buy</button>
+                    }
+                    @else {
+                      <button class="action-btn update-btn" [routerLink]="['/products/update-products/',product._id]">Update</button>
+                      <button class="action-btn delete-btn" (click)="deleteProduct(product._id)">Delete</button>
+                    }
+                  </td>
+                </tr>
+              }
+            }
+            @else {
+              <tr class="empty-row">
+                <td colspan="8">No records found</td>
+              </tr>
+            }
+          }
+          @else {
+            <tr class="loading-row">
+              <td colspan="8">Loading...</td>
             </tr>
           }
-        }
-        @else {
-          <tr>
-            <td colspan="6" class="text-center py-3">No record found</td>
-          </tr>
-        }
-        }
-        @else {
-          <tr>
-            <td colspan="6" class="text-center py-3">Loading...</td>
-          </tr>
-        }
-      </ng-container>
+        </ng-container>
       </tbody>
     </table>
   </div>
 </div>
 
+<!-- Quantity Modal (unchanged) -->
 <ng-template #quantityField let-modal>
   <div class="modal-header">
     <h4 class="modal-title">Select Quantity</h4>

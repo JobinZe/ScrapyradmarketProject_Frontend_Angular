@@ -12,6 +12,7 @@ import { SessionExpiredComponent } from './session-expired/session-expired.compo
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FooterComponent } from './footer/footer.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { AboutUsComponent } from './about-us/about-us.component';
 
 
 
@@ -24,7 +25,8 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
     SessionExpiredComponent,
     ErrorComponent,
     FooterComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    AboutUsComponent
 
   ],
   imports: [

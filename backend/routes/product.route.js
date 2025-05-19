@@ -119,7 +119,7 @@ router.post('/update-product/:id',verifyToken,upload.single("image"),async(req,r
     const payload = req.body;
     const objectId = req.params.id;
     const userId = req.user.userId;
-    const filePresent = req.file;
+        const filePresent = req.file;
     console.log(filePresent,"fp")
     console.log(req.body,"payload")
     const findActualProduct = await Product.findOne({userId: userId, _id: objectId})
@@ -145,7 +145,7 @@ router.post('/update-product/:id',verifyToken,upload.single("image"),async(req,r
   }
   catch(error){
     console.log(error)
-    return res.status(500).json({stats: 1025, message: "Internal Server Error"})
+    return res.status(500).json({status: 1025, message: "Internal Server Error"})
 
   }
 })
