@@ -1,10 +1,26 @@
 <nav class="nav-bar">
     <div class="left-link">
-        <!-- Empty for now -->
+      <!-- Empty for now -->
     </div>
-
+  
     <div class="right-link">
-        <a [routerLink]="'/login/'" *ngIf="!isLoggedIn" class="nav-btn login-btn">Log In</a>
-        <a [routerLink]="'/login/sign-up'" class="nav-btn signup-btn">Sign Up</a>
+      <!-- Language Dropdown -->
+      <div class="language-dropdown">
+        <button class="language-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+          <span>{{selectedLang == 'en' ? 'English' : 'हिंदी (Hindi)'}}</span>
+        </button>
+        <div class="dropdown-content">
+          <a (click)="setLang('en')">English</a>
+          <a (click)="setLang('hi')">हिंदी (Hindi)</a>
+        </div>
+      </div>
+  
+      <a [routerLink]="'/login/'" *ngIf="!isLoggedIn" class="nav-btn login-btn">{{'LOGIN.login' | translate}}</a>
+      <a [routerLink]="'/login/sign-up'" class="nav-btn signup-btn">{{'nav-bar.sign-up' | translate}}</a>
     </div>
-</nav>
+  </nav>

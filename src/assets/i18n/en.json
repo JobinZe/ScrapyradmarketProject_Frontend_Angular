@@ -1,0 +1,16 @@
+{
+    "WELCOME": "Welcome Again",
+    "nav-bar":{
+          "sign-up":"Sign Up"
+    },
+    "LOGIN": {
+        "login":"Log in",
+        "enter.cred":"Please enter your credentials to log in",
+        "username":"Username",
+        "enter.user.name":"Please enter Username",
+        "password":"Password",
+        "enter.password":"Please enter Password",
+        "log.in":"Login",
+        "forgot.password":"Forgot your password?"
+        }
+    }

@@ -105,10 +105,10 @@ onSubmit(){
     this.addProductForm.markAllAsTouched()
     return
   }
-this.formData.append('productName',JSON.stringify(this.addProductForm.get('productName')?.value))
-this.formData.append('price',JSON.stringify(this.addProductForm.get('price')?.value))
+this.formData.append('productName',this.addProductForm.get('productName')?.value)
+this.formData.append('price',this.addProductForm.get('price')?.value)
 this.formData.append('categoryValues',JSON.stringify(Number(this.addProductForm.get('categoryValues')?.value)))
-this.formData.append('description',JSON.stringify(this.addProductForm.get('description')?.value))
+this.formData.append('description',this.addProductForm.get('description')?.value)
 this.formData.append('quantity',this.addProductForm.get('quantity')?.value);
 this.productService.submitProduct(this.formData).subscribe({
   next:(res)=>{
@@ -134,10 +134,10 @@ updateProduct(){
     this.addProductForm.markAllAsTouched()
     return
   }
-  this.formData.append('productName',JSON.stringify(this.addProductForm.get('productName')?.value))
-  this.formData.append('price',JSON.stringify(this.addProductForm.get('price')?.value))
+  this.formData.append('productName',this.addProductForm.get('productName')?.value)
+  this.formData.append('price',this.addProductForm.get('price')?.value)
   this.formData.append('categoryValues',JSON.stringify(Number(this.addProductForm.get('categoryValues')?.value)))
-  this.formData.append('description',JSON.stringify(this.addProductForm.get('description')?.value))
+  this.formData.append('description',this.addProductForm.get('description')?.value)
   this.formData.append('quantity',this.addProductForm.get('quantity')?.value)
   this.formData.append('imageName',JSON.stringify(this.productObj?.image))
 

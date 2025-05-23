@@ -70,6 +70,8 @@ router.get('/fetch-products',verifyToken,async(req,res)=>{
         if(userSchema.type == 2){
           productQuery.userId = userId
         }
+      console.log(userSchema)
+      console.log(productQuery,"product query")
         const product = await Product.find(productQuery).populate("categoryValues","category")// populate is used to fetch the entire schema of category
         const updatedProduct = product.map(data=>({
             ...data._doc,
@@ -123,7 +125,6 @@ router.post('/update-product/:id',verifyToken,upload.single("image"),async(req,r
     console.log(filePresent,"fp")
     console.log(req.body,"payload")
     const findActualProduct = await Product.findOne({userId: userId, _id: objectId})
-    console.log(findActualProduct, "fetchproduct")
     if (!findActualProduct) {
       return res.status(400).json({stats: 1022, message: "product doesnt exist"})
     }
@@ -131,12 +132,12 @@ router.post('/update-product/:id',verifyToken,upload.single("image"),async(req,r
       findActualProduct.image = filePresent.filename;
     }
     const parsedPayload = {
-      productName: JSON.parse(payload.productName),
-      price: JSON.parse(payload.price),
-      categoryValues: JSON.parse(payload.categoryValues),
-      description: JSON.parse(payload.description),
-      quantity: JSON.parse(payload.quantity),
-      imageName: JSON.parse(payload.imageName),
+      productName: payload.productName,
+      price: payload.price,
+      categoryValues: payload.categoryValues,
+      description: payload.description,
+      quantity: payload.quantity,
+      imageName: payload.imageName,
     };
 
     Object.assign(findActualProduct, parsedPayload)

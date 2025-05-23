@@ -19,7 +19,7 @@
           <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
       </div>
-      <button class="add-product-btn" (click)="navigateToProduct()">
+      <button class="add-product-btn" (click)="navigateToProduct()" *ngIf="userDetails?.type == 2">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <line x1="12" y1="5" x2="12" y2="19"></line>
           <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -55,7 +55,7 @@
                       {{ product?.productName }}
                     </a>
                   </td>
-                  <td>{{ product?.price | currency: 'INR' : true }}</td>
+                  <td>{{ product?.price | currency: 'INR' : true :'1.2-2'}}</td>
                   <td>{{ product?.categoryValues?.category }}</td>
                   <td>{{ product?.quantity }}</td>
                   @if(fetchFileType(i) | async; as fileType) {
@@ -70,7 +70,7 @@
                   }
                   <td class="description-cell">{{ product?.description }}</td>
                   <td class="action-cell">
-                    @if(userDetails.type == 1){
+                    @if(userDetails?.type == 1){
                       <button class="action-btn buy-btn" (click)="goToCart(i)">Buy</button>
                     }
                     @else {
@@ -120,7 +120,7 @@
                   }
                   <td class="description-cell">{{ product?.description }}</td>
                   <td class="action-cell">
-                    @if(userDetails.type == 1){
+                    @if(userDetails?.type == 1){
                       <button class="action-btn buy-btn" (click)="goToCart(i)">Buy</button>
                     }
                     @else {

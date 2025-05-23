@@ -5,38 +5,38 @@
         <!-- Login Form Column -->
         <div class="col-md-6 login-form-col">
             <div class="login-card">
-                <div class="login-header">
-                    <h1 class="login-title">Welcome Back</h1>
-                    <p class="login-subtitle">Please enter your credentials to login</p>
+                                <div class="login-header">
+                    <h1 class="login-title">{{'WELCOME' | translate}}</h1>
+                    <p class="login-subtitle">{{'LOGIN.enter.cred' | translate}}</p>
                 </div>
                 
                 <form [formGroup]="logInForm" class="login-form">
                     <div class="form-group">
-                        <label for="username" class="form-label">Username</label>
+                        <label for="username" class="form-label">{{'LOGIN.username' | translate}}</label>
                         <input type="text" id="username" class="form-control" 
                                placeholder="Enter your username" formControlName="username">
                         <div class="validation-error">
                            <span *ngIf="logInForm.get('username')?.touched || logInForm.get('username')?.dirty">
-                             <span *ngIf="logInForm.get('username')?.errors?.['required']">Please enter Username</span>
+                             <span *ngIf="logInForm.get('username')?.errors?.['required']">{{'LOGIN.enter.user.name' | translate}}</span>
                            </span>
                         </div>
                     </div>
                     
                     <div class="form-group">
-                        <label for="password" class="form-label">Password</label>
+                        <label for="password" class="form-label">{{'LOGIN.password' | translate}}</label>
                         <input type="password" id="password" class="form-control" 
                                placeholder="Enter your password" formControlName="password">
                         <div class="validation-error">
                             <span *ngIf="logInForm.get('password')?.touched || logInForm.get('password')?.dirty">
-                              <span *ngIf="logInForm.get('password')?.errors?.['required']">Please enter Password</span>
+                              <span *ngIf="logInForm.get('password')?.errors?.['required']">{{'LOGIN.enter.password' | translate}}</span>
                             </span>
                         </div>
                     </div>
                     
-                    <button type="submit" class="login-btn" (click)="logIn()">Login</button>
+                    <button type="submit" class="login-btn" (click)="logIn()">{{'LOGIN.log.in' | translate}}</button>
                     
                     <div class="login-footer">
-                        <a [routerLink]="['/common/forgot-password']" class="forgot-password">Forgot your password?</a>
+                        <a [routerLink]="['/common/forgot-password']" class="forgot-password">{{'LOGIN.forgot.password' | translate}}</a>
                     </div>
                 </form>
             </div>

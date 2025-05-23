@@ -39,10 +39,26 @@ export class DashboardComponent implements  OnInit {
      })
      }
     ngOnInit(): void {
-      this.fetchDataForDashboard()
-      this.store.select(selectionSessionState).subscribe(response=>{
+      this.fetchDataForDashboard()    
+      this.fetchSession()  
+   
+    }
+
+    fetchSession(){
+      this.store.select(selectionSessionState).pipe(debounceTime(750))
+      .subscribe(response=>{
+        console.log(typeof response); // 'object' or 'string'
+        if(typeof response == 'string'){
+          let parsed = JSON.parse(response)
+          this.userDetails = parsed
+        }
+        else{
           this.userDetails = response;
-      })
+
+        }
+        console.log(this.userDetails,">><<user detail");
+                
+    })
     }
     fetchDataForDashboard(){
       this.productService.fetchData().subscribe()
@@ -53,7 +69,7 @@ export class DashboardComponent implements  OnInit {
     }
    fetchFileType(id:number):Observable<string>{
    return this.product$.pipe(map((response:ProductModel)=>{
-     return this.checkFileType(response.updatedProduct[id].image)
+     return this.checkFileType(response.updatedProduct[id]?.image)
     }))
    }
    fetchFileTypeForSearch(prodArray:any[],id:number):Observable<string>{

@@ -7,15 +7,19 @@ import { AppComponent } from './app.component';
 import { CommonModules } from './common/common.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import { AuthInterceptor } from './services/auth-interceptor.interceptor';
 import { StoreModule } from '@ngrx/store';
 import {sessionReducer} from './login/store/auth-reducer';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { UserRegistrationService } from './login/services/user-reg.services';
 import { LoginModule } from "./login/login.module";
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
-
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, '/assets/i18n/', '.json');  
+}
 @NgModule({
   declarations: [
     AppComponent
@@ -29,6 +33,13 @@ import { LoginModule } from "./login/login.module";
     ReactiveFormsModule,
     FormsModule,
     NgbModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    }),
     StoreModule.forRoot({ session: sessionReducer }),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
     LoginModule

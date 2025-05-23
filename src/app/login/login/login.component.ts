@@ -4,6 +4,7 @@ import { UserRegistrationService } from '../services/user-reg.services';
 import { ActivatedRoute, Router } from '@angular/router';
 import {Store} from '@ngrx/store';
 import {setSession} from '../store/auth-action';
+import { LoaderService } from '../services/loader.services';
 
 @Component({
   selector: 'app-login',
@@ -17,6 +18,7 @@ export class LoginComponent implements OnInit{
    alertType:string = 'success'
    showAlert:boolean=false
   constructor(private authService:UserRegistrationService,private fb:FormBuilder,private route:ActivatedRoute,
+    private loaderService:LoaderService,
     private store:Store,
     private router:Router){
       const navigation = this.router.getCurrentNavigation();      
@@ -44,10 +46,13 @@ export class LoginComponent implements OnInit{
     this.authService.logInUserApi(data).subscribe((response)=>{
       let stringified = JSON.stringify(response)
       let parsed =JSON.parse(stringified)
+      console.log(response,parsed,"parsed");
+      this.loaderService.hideLoader()
+
       if(parsed.status == 1001){
         localStorage.setItem('token',parsed.token)
         this.authService.setSessionValue(response)
-        this.store.dispatch(setSession({sessionData:response}))
+        this.store.dispatch(setSession({sessionData:parsed}))
         this.router.navigate(['/products/dashboard'])
       }
       else if(parsed.status == 1008){
