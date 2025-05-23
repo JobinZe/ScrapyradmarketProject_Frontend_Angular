@@ -28,12 +28,17 @@ export class DashboardComponent implements  OnInit {
      isSearchAdded:boolean=false
      userDetails:any
      showAlert:boolean=false
-     alertType!:string
+     alertType:string='success'
      message!:string
      @ViewChild('quantityField') quantityModal:any
 
      constructor( private router:Router,private fb:FormBuilder,private cartService:CartService,private modalService:NgbModal,
       private store:Store) {
+        const navigation = this.router.getCurrentNavigation();      
+      this.message = navigation?.extras?.state?.['data']?.['msg']
+       if(this.message){
+         this.showAlert=true
+       }
      this.searchForm = this.fb.group({
       searchController:[null]
      })
@@ -41,7 +46,7 @@ export class DashboardComponent implements  OnInit {
     ngOnInit(): void {
       this.fetchDataForDashboard()    
       this.fetchSession()  
-   
+      
     }
 
     fetchSession(){

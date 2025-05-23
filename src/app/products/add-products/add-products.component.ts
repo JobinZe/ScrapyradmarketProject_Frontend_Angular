@@ -118,8 +118,11 @@ this.productService.submitProduct(this.formData).subscribe({
     let stringified = JSON.stringify(res)
     let parsed = JSON.parse(stringified)
     if(parsed.status == 1012){
-      alert("Product added Successfuly")
-      this.router.navigate(['/products/dashboard'])
+      this.message = "Product added successfuly";
+      this.alertType="success";
+      this.showAlert=true
+      const navigationExtras:NavigationExtras={state:{data:{msg:this.message}}}
+      this.router.navigate(['/products/dashboard'],navigationExtras)
     }
   },
   error(err){
@@ -155,8 +158,8 @@ updateProduct(){
          this.message = "Product updated successfuly";
          this.alertType="success";
          this.showAlert=true
-         const nE:NavigationExtras={state:{data:{msg:this.message,alertType:this.alertType}}}
-         this.router.navigate(['products/dashboard'],nE)
+         const navigationExtras:NavigationExtras={state:{data:{msg:this.message}}}
+         this.router.navigate(['products/dashboard'],navigationExtras)
 
     }
     else if(parsed.status == 1022){

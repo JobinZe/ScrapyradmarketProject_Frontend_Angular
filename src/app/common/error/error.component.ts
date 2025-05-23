@@ -7,5 +7,8 @@ import { Component } from '@angular/core';
   styleUrl: './error.component.css'
 })
 export class ErrorComponent {
-
+// In your component.ts file
+reloadPage() {
+  window.location.reload();
+}
 }

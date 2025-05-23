@@ -1,3 +1,123 @@
-.left-link{
+/* Error Page Styles */
+.error-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f8fafc;
+    padding: 2rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .error-content {
+    max-width: 500px;
+    text-align: center;
+    background: white;
+    padding: 3rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  }
+  
+  .error-icon {
+    margin-bottom: 1.5rem;
+  }
+  
+  .error-icon svg {
+    animation: pulse 1.5s infinite;
+  }
+  
+  h1 {
+    font-size: 2rem;
+    color: #1e293b;
+    margin-bottom: 1rem;
+  }
+  
+  .error-message {
+    color: #64748b;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+  }
+  
+  .error-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+  
+  .home-btn, .refresh-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+  
+  .home-btn {
+    background-color: #4a6bff;
+    color: white;
+    text-decoration: none;
+  }
+  
+  .home-btn:hover {
+    background-color: #3a56cc;
+    transform: translateY(-2px);
+  }
+  
+  .refresh-btn {
+    background-color: white;
+    border: 1px solid #e2e8f0;
     cursor: pointer;
-}
+  }
+  
+  .refresh-btn:hover {
+    background-color: #f1f5f9;
+    transform: translateY(-2px);
+  }
+  
+  .error-status {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    margin-top: 1.5rem;
+  }
+  
+  .contact-support {
+    margin-top: 0.5rem;
+  }
+  
+  .contact-support a {
+    color: #4a6bff;
+    text-decoration: none;
+  }
+  
+  .contact-support a:hover {
+    text-decoration: underline;
+  }
+  
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 600px) {
+    .error-content {
+      padding: 2rem 1.5rem;
+    }
+    
+    .error-actions {
+      flex-direction: column;
+    }
+    
+    h1 {
+      font-size: 1.5rem;
+    }
+    
+    .error-message {
+      font-size: 1rem;
+    }
+  }
