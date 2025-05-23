@@ -50,7 +50,7 @@ export class DashboardComponent implements  OnInit {
     }
 
     fetchSession(){
-      this.store.select(selectionSessionState).pipe(debounceTime(750))
+      this.store.select(selectionSessionState)
       .subscribe(response=>{
         console.log(typeof response); // 'object' or 'string'
         if(typeof response == 'string'){
@@ -60,9 +60,7 @@ export class DashboardComponent implements  OnInit {
         else{
           this.userDetails = response;
 
-        }
-        console.log(this.userDetails,">><<user detail");
-                
+        }                
     })
     }
     fetchDataForDashboard(){
