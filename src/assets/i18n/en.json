@@ -11,6 +11,10 @@
         "password":"Password",
         "enter.password":"Please enter Password",
         "log.in":"Login",
-        "forgot.password":"Forgot your password?"
-        }
+        "forgot.password":"Forgot your password?",
+        ".password":"Forgot your password?"
+        },
+    "sign.up":{
+      "create.acc":"Create Your Account"
     }
+}
