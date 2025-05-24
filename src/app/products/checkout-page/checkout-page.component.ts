@@ -35,12 +35,35 @@ export class CheckoutPageComponent implements OnInit{
     city:[null,[Validators.required]],
     zipCode:[null,[Validators.required]],
     paymentMethod:[null,[Validators.required]],
-    cardHolder:[null,[Validators.required]],
-    cardNumber:[null,[Validators.required]],
-    expiryDate:[null,[Validators.required]],
-    cvv:[null,[Validators.required,Validators.maxLength(3),Validators.pattern('^[0-9]*$')]],
+    cardHolder:[null],
+    cardNumber:[null],
+    expiryDate:[null],
+    cvv:[null,[Validators.pattern('^[0-9]*$')]],
    })      
 
+  }
+  conditionalCheck(){
+    if(this.paymentForm.get('paymentMethod')?.value == 1){
+      this.paymentForm.get('cardHolder')?.setValidators([Validators.required])
+      this.paymentForm.get('cardNumber')?.setValidators([Validators.required])
+      this.paymentForm.get('expiryDate')?.setValidators([Validators.required])
+      this.paymentForm.get('cvv')?.setValidators([Validators.required,Validators.minLength(3)])
+      this.paymentForm.get('cardHolder')?.updateValueAndValidity()
+      this.paymentForm.get('cardNumber')?.updateValueAndValidity()
+      this.paymentForm.get('expiryDate')?.updateValueAndValidity()
+      this.paymentForm.get('cvv')?.updateValueAndValidity()
+    }
+    else{
+      this.paymentForm.get('cardHolder')?.clearValidators()
+      this.paymentForm.get('cardNumber')?.clearValidators()
+      this.paymentForm.get('expiryDate')?.clearValidators()
+      this.paymentForm.get('cvv')?.clearValidators()
+
+      this.paymentForm.get('cardHolder')?.updateValueAndValidity()
+      this.paymentForm.get('cardNumber')?.updateValueAndValidity()
+      this.paymentForm.get('expiryDate')?.updateValueAndValidity()
+      this.paymentForm.get('cvv')?.updateValueAndValidity()
+    }
   }
   selectedMethod!:string
   setValueforPM(recievedValue:string){
@@ -51,6 +74,8 @@ export class CheckoutPageComponent implements OnInit{
    else{
     this.paymentForm.get('paymentMethod')?.patchValue(2);
    }
+   this.conditionalCheck()
+
   }
   submitPayment(){
     if(this.paymentForm.invalid){
