@@ -73,6 +73,8 @@
                   <td class="action-cell">
                     @if(userDetails?.type == 1){
                       <button class="action-btn buy-btn" (click)="goToCart(i)">{{'dashboard.buy' | translate}}</button>
+                      <button class="action-btn buy-btn" (click)="openCounterModal(product._id)">Counter Offer</button>
+
                     }
                     @else {
                       <button class="action-btn update-btn" [routerLink]="['/products/update-products/',product._id]">{{'dashboard.update' | translate}}</button>
@@ -123,6 +125,8 @@
                   <td class="action-cell">
                     @if(userDetails?.type == 1){
                       <button class="action-btn buy-btn" (click)="goToCart(i)">{{'dashboard.buy' | translate}}</button>
+                      <button class="action-btn buy-btn" (click)="openCounterModal(product._id)">Counter Offer</button>
+
                     }
                     @else {
                       <button class="action-btn update-btn" [routerLink]="['/products/update-products/',product._id]">{{'dashboard.update' | translate}}</button>
@@ -150,24 +154,172 @@
 </div>
 
 <!-- Quantity Modal (unchanged) -->
-<ng-template #quantityField let-modal>
+<ng-template #counterModalModal let-modal>
+  <div class="modal-counter-container">
+    <div class="modal-counter-header">
+      <h4 class="modal-counter-title">Counter Price</h4>
+      <button type="button" class="modal-counter-close" aria-label="Close" (click)="modal.dismiss()">
+        &times;
+      </button>
+    </div>
+    <div class="modal-counter-body">
+      <div class="form-group">
+        <label class="modal-counter-label">Enter Counter Price</label>
+        <input type="text" class="modal-counter-input" [(ngModel)]="formValue" 
+               placeholder="Enter Counter Price">
+      </div>
+    </div>
+    <div class="modal-counter-footer">
+      <button type="button" class="modal-counter-btn modal-counter-btn-secondary" 
+              (click)="modal.dismiss()">
+        {{'dashboard.cancel' | translate}}
+      </button>
+      <button type="button" class="modal-counter-btn modal-counter-btn-primary" 
+              (click)="counterOffer()">
+        Counter
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #counterAlert let-modal>
+  <div class="modal-counter-container">
+    <div class="modal-counter-header">
+      <h4 class="modal-counter-title">Counter Offer Alert</h4>
+      <button type="button" class="modal-counter-close" aria-label="Close" (click)="modal.dismiss()">
+        &times;
+      </button>
+    </div>
+    
+    <div class="modal-counter-body">
+      <ng-container *ngIf="counterRecived && !counterAccepted">
+        <p class="modal-counter-message">Buyer has provided a counter offer for your product. 
+           Click below to view the counter offer details.</p>
+      </ng-container>
+      
+      <ng-container *ngIf="!counterRecived && counterAccepted">
+        <p class="modal-counter-message">Seller has accepted your counter offer. 
+           Please check the dashboard for updated prices.</p>
+      </ng-container>
+    </div>
+    
+    <div class="modal-counter-footer" *ngIf="counterRecived && !counterAccepted">
+      <button type="button" class="modal-counter-btn modal-counter-btn-primary" 
+              (click)="fetchCounterDetail()">
+        View Counter Offer
+      </button>
+    </div>
+  </div>
+</ng-template>
+<ng-template #counterModalModal let-modal>
   <div class="modal-header">
-    <h4 class="modal-title">{{'dashboard.select.qty' | translate}}</h4>
+    <h4 class="modal-title">Counter Price</h4>
     <a type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></a>
   </div>
   <div class="modal-body">
-    <div class="quantity-selector">
-      <button (click)="decrementButton()">-</button>
-      <span>{{valueForQuantity}}</span>
-      <button (click)="incrementQuantity()">+</button>
-    </div>
-    <span class="text-danger" *ngIf="invalidQuantity">
-      {{'dashboard.invalid.qty' | translate}}
-    </span>
+    <label class="form-label">Enter Counter Price</label>
+    <input type="text" class="form-input" [(ngModel)]="formValue" placeholder="Enter Counter Price">
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">      {{'dashboard.cancel' | translate}}
     </button>
-    <button type="button" class="btn btn-primary" (click)="invalidQuantity ? modal.dismiss() : updateQuantity()">{{'dashboard.confirm' | translate}}</button>
+    <button type="button" class="btn btn-primary" (click)="counterOffer()">Counter</button>
+  </div>
+</ng-template>
+<ng-template #counterAlert let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Counter Offer Alert</h4>
+    <a type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></a>
+  </div>
+  <ng-container *ngIf="counterRecived && !counterAccepted" >
+  <div class="modal-body">
+  <p>Buyer has provided a counter offer for your product Click on view counter offer to check</p>
+  </div>
+  <div class="modal-footer">
+ 
+    <button type="button" class="btn btn-primary" (click)="fetchCounterDetail()">View Counter Offer</button>
+  </div>
+</ng-container>
+<ng-container  *ngIf="!counterRecived && counterAccepted" >
+  <div class="modal-body">
+    <p>Seller has accepted your counter offer. Please check the dashboard for updated prices.</p>
+  </div>
+</ng-container>
+
+</ng-template>
+<ng-template #counterOfferRecieved let-modal>
+  <div class="counter-offer-modal">
+    <div class="modal-header">
+      <h3 class="modal-title">Counter Offers Received</h3>
+      <button type="button" class="close-btn" (click)="modal.dismiss()" aria-label="Close">
+        &times;
+      </button>
+    </div>
+    
+    <div class="modal-body">
+      <div class="offer-list">
+        @for(offer of counterOfferData; track offer._id;let i = $index){
+        <div  class="offer-item">
+          <div class="product-info">
+            <div class="product-image" >
+              @if(fetchFileTypeForSearch(counterOfferData,i) | async; as fileType) {
+                <td>
+                  <ng-container *ngIf="fileType == 'image'; else documentView">
+                    <img [src]="offer?.image" alt="Product image" class="product-image">
+                  </ng-container>
+                  <ng-template #documentView>
+                    <iframe [src]="bypassSecurity(offer?.image)" class="document-preview"></iframe>
+                  </ng-template>
+                </td>
+              }
+            </div>
+            <div class="product-details">
+              <h4>{{offer.productName}}</h4>
+              <div class="price-details">
+                <div class="price-row">
+                  <span class="label">Your Price:</span>
+                  <span class="value">{{offer.originalPrice | currency}}</span>
+                </div>
+                <div class="price-row highlighted">
+                  <span class="label">Counter Offer:</span>
+                  <span class="value">{{offer.counterPrice | currency}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="offer-actions">
+            <button class="btn reject-btn" (click)="acceptorRejectCounterOffer(offer._id,2)">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            Reject
+            </button>
+            <button class="btn accept-btn" (click)="acceptorRejectCounterOffer(offer._id,1)">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+             Accept
+            </button>
+          </div>
+        </div>
+      }
+        <!-- <div *ngIf="!counterOffers || counterOffers.length === 0" class="no-offers">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          <p>No counter offers available</p>
+        </div> -->
+      </div>
+    </div>
+    
+    <div class="modal-footer">
+      <button type="button" class="btn secondary-btn" (click)="modal.dismiss()">
+        {{'dashboard.close' | translate}}
+      </button>
+    </div>
   </div>
 </ng-template>

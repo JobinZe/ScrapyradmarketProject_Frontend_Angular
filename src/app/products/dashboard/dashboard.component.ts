@@ -9,6 +9,7 @@ import { CartService } from '../services/cart-service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { selectionSessionState } from '../../login/store/auth-selector';
+import { CounterOfferServices } from '../services/counter-offer-services';
 
 
 @Component({
@@ -31,8 +32,11 @@ export class DashboardComponent implements  OnInit {
      alertType:string='success'
      message!:string
      @ViewChild('quantityField') quantityModal:any
+     @ViewChild('counterModalModal') counterModalModal:any
+      @ViewChild('counterAlert') counterAlert:any
+      @ViewChild('counterOfferRecieved') counterOfferRecieved:any
 
-     constructor( private router:Router,private fb:FormBuilder,private cartService:CartService,private modalService:NgbModal,
+     constructor( private router:Router,private fb:FormBuilder,private cartService:CartService,private modalService:NgbModal,private counterOfferService:CounterOfferServices,
       private store:Store) {
         const navigation = this.router.getCurrentNavigation();      
       this.message = navigation?.extras?.state?.['data']?.['msg']
@@ -46,7 +50,8 @@ export class DashboardComponent implements  OnInit {
     ngOnInit(): void {
       this.fetchDataForDashboard()    
       this.fetchSession()  
-      
+      this.checkForCounter()
+      this.viewAcceptedCounter()
     }
 
     fetchSession(){
@@ -180,5 +185,78 @@ export class DashboardComponent implements  OnInit {
         }
       })
     }
- 
+    productIdForCounter:any
+    openCounterModal(id:any){
+    this.productIdForCounter=id;
+    this.modalService.open(this.counterModalModal)
+    }
+    formValue!:any
+    counterOffer(){
+     this.counterOfferService.submitCounter(this.formValue,this.productIdForCounter).subscribe((response:any)=>{
+      if(response.status == 1032){
+        this.showAlert=true;
+        this.message = "Counter Offer Sent to Seller";
+        this.alertType='success';
+        this.modalService.dismissAll()
+      }
+     })
+    }
+    counterRecived!:boolean;
+    counterAccepted!:boolean
+    checkForCounter(){
+      this.counterOfferService.checkForCounter().subscribe((response:any)=>{
+        if(response.status == 1034 && response.counterOfferPresent == true){
+          this.modalService.open(this.counterAlert)
+          this.counterRecived=true;
+          this.counterAccepted=false
+        }
+        else{
+          
+        }
+      })
+    }
+    counterPriceFromBuyer:any
+    counterOfferData:any[]=[]
+    fetchCounterDetail(){
+      this.modalService.dismissAll()
+      this.modalService.open(this.counterOfferRecieved)
+        this.counterOfferService.fetchCounterDetail().subscribe((response:any)=>{
+          console.log(response);
+          this.counterOfferData=response
+        })
+    }
+   
+    acceptorRejectCounterOffer(counterId:any,type:any){
+     this.counterOfferService.settleCounter(counterId,type).subscribe((response:any)=>{
+      this.showAlert=true;
+      if(response.status == 1030){
+      
+        this.showAlert=true
+      this.message = "Response sent to buyer successfuly";
+      this.alertType='success';
+      this.modalService.dismissAll();
+      this.fetchDataForDashboard()
+      }
+      else if(response.status == 1031){
+        this.showAlert=true
+        this.message = "Counter Offer rejected";
+        this.alertType='success';
+        this.modalService.dismissAll();
+        this.fetchDataForDashboard()
+      }
+     })
+    }
+    viewAcceptedCounterData:any[]=[]
+    viewAcceptedCounter(){
+      this.counterOfferService.acceptedCounter().subscribe((res:any)=>{
+     this.viewAcceptedCounterData=res
+     if(this.viewAcceptedCounterData.length > 0){
+     this.counterRecived=false;
+    this.counterAccepted=true;
+    this.modalService.open(this.counterAlert)
+     }
+      })
+    }
 }
+
+
