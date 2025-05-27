@@ -33,6 +33,10 @@ logOut(){
    this.logOutUser()
    return this.http.get(this.serverUrl + 'api/auth/logout')
 }
+getCartCountData(){
+  return this.http.get(this.serverUrl + 'api/auth/find-total-cart')
+
+}
 logOutUser(){
  window.sessionStorage.removeItem(USER_AUTH);
  localStorage.removeItem('token')

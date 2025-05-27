@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { CheckoutService } from '../services/checkout-services';
 import { PaymentServices } from '../services/payment-services';
+import { UserRegistrationService } from '../../login/services/user-reg.services';
 
 @Component({
   selector: 'app-checkout-page',
@@ -16,7 +17,8 @@ export class CheckoutPageComponent implements OnInit{
   message!:string;
   paymentForm!:FormGroup;
   checkoutDetails:any={}
-  constructor(private fb:FormBuilder,private route:ActivatedRoute,private checkoutService:CheckoutService,
+  cartItemCount:any
+  constructor(private fb:FormBuilder,private route:ActivatedRoute,private checkoutService:CheckoutService,private authServices:UserRegistrationService,
     private router:Router,private paymentServices:PaymentServices){
       const navigation = this.router.getCurrentNavigation()
        this.message = navigation?.extras.state?.['data']?.['msg']
@@ -28,6 +30,9 @@ export class CheckoutPageComponent implements OnInit{
    this.checkoutDetails = response.fetchCheckout;
 
    }) 
+   this.authServices.getCartCountData().subscribe((response:any)=>{
+    this.cartItemCount = response.totalLength
+   })
    this.paymentForm = this.fb.group({
     fullName:[null,[Validators.required]],
     emailAddress:[null,[Validators.required]],

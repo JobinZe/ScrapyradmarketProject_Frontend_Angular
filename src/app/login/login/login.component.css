@@ -4,6 +4,11 @@
     background-color: #f8fafc;
 }
 
+  
+  .alert-custom.ng-hide {
+    opacity: 0;
+  }
+  
 .login-form-col {
     display: flex;
     align-items: center;
@@ -134,12 +139,11 @@
 }
 
 .alert-custom {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 1000;
-    max-width: 400px;
-}
+    margin-bottom: 20px;
+    width: 100%;
+    text-align: center;
+  }
+  
 
 /* Responsive adjustments */
 @media (max-width: 768px) {

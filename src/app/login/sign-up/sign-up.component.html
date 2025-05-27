@@ -7,20 +7,20 @@
 
     <!-- Header -->
     <div class="signup-header">
-      <h2 class="signup-title">Create Your Account</h2>
-      <p class="signup-subtitle">Join our community today</p>
+      <h2 class="signup-title">{{'sign.up.create.acc' | translate}}</h2>
+      <p class="signup-subtitle">{{'sign.up.community' | translate}}</p>
     </div>
 
     <!-- Form -->
     <form [formGroup]="userRegForm" class="signup-form">
       <!-- Email -->
       <div class="form-group">
-        <label for="email">Email Address</label>
+        <label for="email">{{'sign.up.email.id' | translate}}</label>
         <input type="email" id="email" class="form-control" 
                formControlName="email" placeholder="your@email.com">
         <div class="validation-error">
           <span *ngIf="userRegForm.get('email')?.touched || userRegForm.get('email')?.dirty">
-            <span *ngIf="userRegForm.get('email')?.errors?.['required']">Please enter Email</span>
+            <span *ngIf="userRegForm.get('email')?.errors?.['required']">{{'sign.up.enter.email' | translate}}</span>
           </span>
         </div>
       </div>
@@ -32,62 +32,62 @@
                formControlName="userName" placeholder="Choose a username">
         <div class="validation-error">
           <span *ngIf="userRegForm.get('userName')?.touched || userRegForm.get('userName')?.dirty">
-            <span *ngIf="userRegForm.get('userName')?.errors?.['required']">Please enter Username</span>
+            <span *ngIf="userRegForm.get('userName')?.errors?.['required']">{{'sign.up.enter.username' | translate}}</span>
           </span>
         </div>
       </div>
 
       <!-- Gender -->
       <div class="form-group">
-        <label for="gender">Gender</label>
+        <label for="gender">{{'sign.up.gender' | translate}}</label>
         <select id="gender" class="form-select" formControlName="gender">
-          <option value="">Please select</option>
-          <option value="0">Male</option>
-          <option value="1">Female</option>
-          <option value="2">Other</option>
+          <option value="">{{'sign.up.Please.select' | translate}}</option>
+          <option value="0">{{'sign.up.male' | translate}}</option>
+          <option value="1">{{'sign.up.female' | translate}}</option>
+          <option value="2">{{'sign.up.other' | translate}}</option>
         </select>
         <div class="validation-error">
           <span *ngIf="userRegForm.get('gender')?.touched || userRegForm.get('gender')?.dirty">
-            <span *ngIf="userRegForm.get('gender')?.errors?.['required']">Please select gender</span>
+            <span *ngIf="userRegForm.get('gender')?.errors?.['required']">{{'sign.up.select.gender' | translate}}</span>
           </span>
         </div>
       </div>
 
       <!-- User Type -->
       <div class="form-group">
-        <label for="userType">I want to join as</label>
+        <label for="userType">{{'sign.up.want.join' | translate}}</label>
         <select id="userType" class="form-select" formControlName="type">
-          <option value="">Please select</option>
-          <option [value]="1">Buyer</option>
-          <option [value]="2">Seller</option>
+          <option value="">{{'sign.up.Please.select' | translate}}</option>
+          <option [value]="1">{{'sign.up.buyer' | translate}}</option>
+          <option [value]="2">{{'sign.up.seller' | translate}}</option>
         </select>
         <div class="validation-error">
           <span *ngIf="userRegForm.get('type')?.touched || userRegForm.get('type')?.dirty">
-            <span *ngIf="userRegForm.get('type')?.errors?.['required']">Please select your type</span>
+            <span *ngIf="userRegForm.get('type')?.errors?.['required']">{{'sign.up.select.type' | translate}}</span>
           </span>
         </div>
       </div>
 
       <!-- Password -->
       <div class="form-group">
-        <label for="password">Password</label>
+        <label for="password">{{'LOGIN.password' | translate}}</label>
         <input type="password" id="password" class="form-control" 
                formControlName="password" placeholder="Create a password" (input)="checkField()">
         <div class="validation-error">
           <span *ngIf="userRegForm.get('password')?.touched || userRegForm.get('password')?.dirty">
-            <span *ngIf="userRegForm.get('password')?.errors?.['required']">Please enter password</span>
-            <span *ngIf="userRegForm.get('password')?.errors?.['minlength']">Minimum 5 characters required</span>
+            <span *ngIf="userRegForm.get('password')?.errors?.['required']">{{'LOGIN.enter.password' | translate}}</span>
+            <span *ngIf="userRegForm.get('password')?.errors?.['minlength']">{{'LOGIN.five.characters' | translate}}</span>
           </span>
         </div>
       </div>
 
       <!-- Submit Button -->
-      <button type="submit" class="signup-btn" (click)="signUp()">Create Account</button>
+      <button type="submit" class="signup-btn" (click)="signUp()">{{'sign.up.create' | translate}}</button>
     </form>
 
     <!-- Footer -->
     <div class="signup-footer">
-      <p>Already have an account? <a [routerLink]="['/login']">Sign in</a></p>
+      <p>{{'sign.up.already.reg' | translate}} <a [routerLink]="['/login']">{{'sign.up.sign.in' | translate}}</a></p>
     </div>
   </div>
 </div>

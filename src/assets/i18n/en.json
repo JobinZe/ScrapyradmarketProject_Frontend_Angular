@@ -12,9 +12,33 @@
         "enter.password":"Please enter Password",
         "log.in":"Login",
         "forgot.password":"Forgot your password?",
-        ".password":"Forgot your password?"
+        "five.characters":"Minimum 5 characters required"
         },
     "sign.up":{
-      "create.acc":"Create Your Account"
+      "create.acc":"Create Your Account",
+      "community":"Join our community today",
+      "email.id":"Email Address",
+      "enter.email":"Please enter Email",
+      "username":"Username",
+      "enter.username":"Please enter Username",
+      "gender":"Gender",
+      "male":"Male",
+      "female":"Female",
+      "other":"Other",
+      "Please.select":"Please select",
+      "select.gender":"Please select gender",
+      "want.join":"I want to join as",
+      "buyer":"Buyer",
+      "seller":"Seller",
+      "select.type":"Please select your type",
+      "create":"Create Account",
+      "sign.in":"Sign In",
+      "already.reg":"Already have an account?"
+    },
+    "forgot.password":{
+      "reset":"Reset Your Password",
+      "reset.link":"Enter your email to receive a reset link",
+      "send.link":"Send Reset Link",
+      "back.login":"Back to login"
     }
 }

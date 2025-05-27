@@ -10,14 +10,16 @@ import { UserRegistrationService } from '../../login/services/user-reg.services'
   styleUrl: './after-login.component.css'
 })
 export class AfterLoginComponent {
-  cartItemCount:any = 2
+  cartItemCount:any
   userName:any = 'user'
   showDropdown = false;
-
+  
   constructor(private authServices:UserRegistrationService,private store:Store,private router:Router) {
   }
   ngOnInit() {
-
+   this.authServices.getCartCountData().subscribe((response:any)=>{
+    this.cartItemCount = response.totalLength
+   })
   }
   logOut(){
     this.authServices.logOut().subscribe(response=>{
