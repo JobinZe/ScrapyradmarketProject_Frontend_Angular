@@ -4,7 +4,7 @@
   </ngb-alert>
 
   <div class="dashboard-header">
-    <h2 class="dashboard-title">Product Dashboard</h2>
+    <h2 class="dashboard-title">{{'dashboard.title' | translate}}</h2>
     <div class="dashboard-controls">
       <div class="search-container" [formGroup]="searchForm">
         <input
@@ -24,7 +24,7 @@
           <line x1="12" y1="5" x2="12" y2="19"></line>
           <line x1="5" y1="12" x2="19" y2="12"></line>
         </svg>
-        Add Product
+        {{'dashboard.add.product' | translate}}
       </button>
     </div>
   </div>
@@ -33,14 +33,15 @@
     <table class="product-table">
       <thead>
         <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Price (INR)</th>
-          <th>Category</th>
-          <th>Quantity</th>
-          <th>Image</th>
-          <th>Description</th>
-          <th>Action</th>
+          <th> {{'dashboard.id' | translate}}
+          </th>
+          <th>{{'dashboard.name' | translate}}</th>
+          <th>{{'dashboard.price' | translate}}</th>
+          <th>{{'dashboard.category' | translate}}</th>
+          <th>{{'dashboard.quantity' | translate}}</th>
+          <th>{{'dashboard.image' | translate}}</th>
+          <th>{{'dashboard.desc' | translate}}</th>
+          <th>{{'dashboard.action' | translate}}</th>
         </tr>
       </thead>
       <tbody>
@@ -71,11 +72,11 @@
                   <td class="description-cell">{{ product?.description }}</td>
                   <td class="action-cell">
                     @if(userDetails?.type == 1){
-                      <button class="action-btn buy-btn" (click)="goToCart(i)">Buy</button>
+                      <button class="action-btn buy-btn" (click)="goToCart(i)">{{'dashboard.buy' | translate}}</button>
                     }
                     @else {
-                      <button class="action-btn update-btn" [routerLink]="['/products/update-products/',product._id]">Update</button>
-                      <button class="action-btn delete-btn" (click)="deleteProduct(product._id)">Delete</button>
+                      <button class="action-btn update-btn" [routerLink]="['/products/update-products/',product._id]">{{'dashboard.update' | translate}}</button>
+                      <button class="action-btn delete-btn" (click)="deleteProduct(product._id)">{{'dashboard.delete' | translate}}</button>
                     }
                   </td>
                 </tr>
@@ -83,13 +84,13 @@
             }
             @else {
               <tr class="empty-row">
-                <td colspan="8">No records found</td>
+                <td colspan="8">{{'dashboard.no.record' | translate}}</td>
               </tr>
             }
           }
           @else {
             <tr class="loading-row">
-              <td colspan="8">Loading...</td>
+              <td colspan="8">{{'dashboard.loading' | translate}}</td>
             </tr>
           }
         </ng-container>
@@ -121,11 +122,11 @@
                   <td class="description-cell">{{ product?.description }}</td>
                   <td class="action-cell">
                     @if(userDetails?.type == 1){
-                      <button class="action-btn buy-btn" (click)="goToCart(i)">Buy</button>
+                      <button class="action-btn buy-btn" (click)="goToCart(i)">{{'dashboard.buy' | translate}}</button>
                     }
                     @else {
-                      <button class="action-btn update-btn" [routerLink]="['/products/update-products/',product._id]">Update</button>
-                      <button class="action-btn delete-btn" (click)="deleteProduct(product._id)">Delete</button>
+                      <button class="action-btn update-btn" [routerLink]="['/products/update-products/',product._id]">{{'dashboard.update' | translate}}</button>
+                      <button class="action-btn delete-btn" (click)="deleteProduct(product._id)">{{'dashboard.delete' | translate}}</button>
                     }
                   </td>
                 </tr>
@@ -133,13 +134,13 @@
             }
             @else {
               <tr class="empty-row">
-                <td colspan="8">No records found</td>
+                <td colspan="8">{{'dashboard.no.record' | translate}}</td>
               </tr>
             }
           }
           @else {
             <tr class="loading-row">
-              <td colspan="8">Loading...</td>
+              <td colspan="8">{{'dashboard.loading' | translate}}</td>
             </tr>
           }
         </ng-container>
@@ -151,7 +152,7 @@
 <!-- Quantity Modal (unchanged) -->
 <ng-template #quantityField let-modal>
   <div class="modal-header">
-    <h4 class="modal-title">Select Quantity</h4>
+    <h4 class="modal-title">{{'dashboard.select.qty' | translate}}</h4>
     <a type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></a>
   </div>
   <div class="modal-body">
@@ -161,11 +162,12 @@
       <button (click)="incrementQuantity()">+</button>
     </div>
     <span class="text-danger" *ngIf="invalidQuantity">
-     Invalid no of Quantity
+      {{'dashboard.invalid.qty' | translate}}
     </span>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
-    <button type="button" class="btn btn-primary" (click)="invalidQuantity ? modal.dismiss() : updateQuantity()">Confirm</button>
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">      {{'dashboard.cancel' | translate}}
+    </button>
+    <button type="button" class="btn btn-primary" (click)="invalidQuantity ? modal.dismiss() : updateQuantity()">{{'dashboard.confirm' | translate}}</button>
   </div>
 </ng-template>

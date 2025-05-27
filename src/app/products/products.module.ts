@@ -9,7 +9,12 @@ import { BuyProductComponent } from './buy-product/buy-product.component';
 import { CheckoutPageComponent } from './checkout-page/checkout-page.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PaymentSuccessComponent } from './payment-success/payment-success.component';
-
+import { HttpClient } from '@angular/common/http';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, '/assets/i18n/', '.json');
+}
 
 @NgModule({
   declarations: [
@@ -25,7 +30,14 @@ import { PaymentSuccessComponent } from './payment-success/payment-success.compo
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    NgbModule
+    NgbModule,
+    TranslateModule.forChild({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      },
+    }),
   ],
   exports:[
     ProductRoutingModule

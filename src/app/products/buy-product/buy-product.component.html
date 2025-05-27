@@ -1,8 +1,8 @@
 <div class="cart-container">
   <div class="cart-header">
-    <h1>Your Shopping Cart</h1>
-    <p *ngIf="cartItems.length > 0">{{cartItems.length}} items in your cart</p>
-    <p *ngIf="cartItems.length === 0">Your cart is empty</p>
+    <h1>{{'cart.shopping.cart' | translate}}</h1>
+    <p *ngIf="cartItems.length > 0">{{cartItems.length}} {{'cart.item.cart' | translate}}</p>
+    <p *ngIf="cartItems.length === 0"> {{'cart.empty.cart' | translate}}</p>
   </div>
 
   <div class="cart-content">
@@ -35,7 +35,7 @@
         <div class="item-details">
           <h3>{{cart?.productName}}</h3>
           <p class="item-description"> {{cart?.description}}</p>
-          <p class="item-description">Quantity added {{cart?.quantity}}</p>
+          <p class="item-description"> {{'cart.qty.added' | translate}} {{cart?.quantity}}</p>
 
           <div class="item-actions">
             <!-- <div class="quantity-selector">
@@ -43,12 +43,12 @@
               <span></span>
               <button >+</button>
             </div> -->
-            <button class="remove-btn" (click)="openRemovePopup(i)">Remove</button>
+            <button class="remove-btn" (click)="openRemovePopup(i)"> {{'cart.remove' | translate}}</button>
           </div>
         </div>
         <div class="item-price">
           <p class="price">{{cart?.price | currency : "INR" : true}}</p>
-          <p class="unit-price" > {{cart?.price}}each</p>
+          <p class="unit-price" > {{cart?.price}}  {{'cart.each' | translate}}</p>
         </div>
       </div>
     }
@@ -57,33 +57,33 @@
     <!-- Empty Cart State -->
     <div class="empty-cart" *ngIf="cartItems.length === 0">
       <img src="assets/images/empty-cart.png" alt="Empty cart">
-      <h2>Your cart is empty</h2>
-      <p>Looks like you haven't added any items to your cart yet</p>
-      <button routerLink="/products/dashboard" class="primary-btn">Continue Shopping</button>
+      <h2>{{'cart.empty' | translate}}</h2>
+      <p>{{'cart.looks.like' | translate}}</p>
+      <button routerLink="/products/dashboard" class="primary-btn">{{'cart.continue.shopping' | translate}}</button>
     </div>
   </div>
 
   <!-- Order Summary -->
   <div class="order-summary" *ngIf="cartItems.length > 0">
-    <h2>Order Summary</h2>
+    <h2>{{'cart.order.summary' | translate}}</h2>
     <div class="summary-row">
-      <span>Subtotal</span>
+      <span>{{'cart.subtotal' | translate}}</span>
       <span>{{subtotal | currency : "INR" : true}}</span>
     </div>
     <div class="summary-row">
-      <span>Shipping</span>
+      <span>{{'cart.shipping' | translate}}</span>
       <span>{{shipping | currency : "INR" : true}}</span>
     </div>
     <div class="summary-row">
-      <span>Tax</span>
+      <span>{{'cart.tax' | translate}}</span>
       <span>{{tax | currency : "INR" : true}}</span>
     </div>
     <div class="summary-row total">
-      <span>Total</span>
+      <span>{{'cart.total' | translate}}</span>
       <span>{{total | currency : "INR" : true}}</span>
     </div>
-    <button class="primary-btn checkout-btn" (click)="submitCheckOut()">Proceed to Checkout</button>
-    <button routerLink="/products/dashboard" class="secondary-btn">Continue Shopping</button>
+    <button class="primary-btn checkout-btn" (click)="submitCheckOut()">{{'cart.checkout' | translate}}</button>
+    <button routerLink="/products/dashboard" class="secondary-btn">{{'cart.continue.shopping' | translate}}</button>
   </div>
 </div>
 
@@ -114,7 +114,7 @@
    -->
    <ng-template #quantityField let-modal>
     <div class="modal-header">
-      <h4 class="modal-title">Select Quantity</h4>
+      <h4 class="modal-title">{{'cart.select.qty' | translate}}</h4>
       <a type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></a>
     </div>
     <div class="modal-body">
@@ -124,11 +124,11 @@
         <button (click)="increaseQuantity()">+</button>
       </div>
       <span class="text-danger" *ngIf="invalidQuantity">
-       Invalid no of Quantity
+        {{'cart.invalid.qty' | translate}}
       </span>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
-      <button type="button" class="btn btn-primary" (click)="invalidQuantity ? modal.dismiss() : removeFromCart()">Confirm</button>
+      <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">{{'cart.cancel' | translate}}</button>
+      <button type="button" class="btn btn-primary" (click)="invalidQuantity ? modal.dismiss() : removeFromCart()">{{'cart.confirm' | translate}}</button>
     </div>
   </ng-template>

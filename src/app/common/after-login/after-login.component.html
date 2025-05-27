@@ -7,30 +7,43 @@
             <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
             <polyline points="9 22 9 12 15 12 15 22"></polyline>
           </svg>
-          <span>ScrapYard</span>
+          <span>{{'after.login.scrapyard' | translate}}</span>
         </a>
       </div>
   
       <!-- Navigation Links - Right Aligned -->
       <div class="navbar-right">
         <div class="nav-links">
-          <a [routerLink]="'products/buy-product'" class="nav-link cart-link">
+          <a [routerLink]="'products/buy-product'" class="nav-link cart-link" *ngIf="userSession?.type == 1">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="9" cy="21" r="1"></circle>
               <circle cx="20" cy="21" r="1"></circle>
               <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
             </svg>
-            <span>My Cart</span>
+            <span>{{'after.login.cart' | translate}}</span>
             <span *ngIf="cartItemCount > 0" class="cart-badge">{{cartItemCount}}</span>
           </a>
-          
+          <div class="language-dropdown">
+            <button class="language-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+              </svg>
+              <span>{{selectedLang == 'en' ? 'English' : 'हिंदी (Hindi)'}}</span>
+            </button>
+            <div class="dropdown-content">
+              <a (click)="setLang('en')">English</a>
+              <a (click)="setLang('hi')">हिंदी (Hindi)</a>
+            </div>
+          </div>
           <button class="logout-btn" (click)="logOut()">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
               <polyline points="16 17 21 12 16 7"></polyline>
               <line x1="21" y1="12" x2="9" y2="12"></line>
             </svg>
-            <span>Log Out</span>
+            <span>{{'after.login.log.out' | translate}}</span>
           </button>
         </div>
       </div>

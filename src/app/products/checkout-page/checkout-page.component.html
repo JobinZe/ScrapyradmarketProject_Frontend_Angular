@@ -1,150 +1,150 @@
 <div class="payment-container">
-  <div class="payment-header">
-    <ngb-alert *ngIf="showAlert" [type]="alertType" (closed)="!showAlert">{{message}}</ngb-alert>
-
-      <h2 class="title">Complete Your Purchase</h2>
-     
-  </div>
-
-  <div class="payment-form">
+    <div class="payment-header">
+      <ngb-alert *ngIf="showAlert" [type]="alertType" (closed)="!showAlert">{{message}}</ngb-alert>
+      <h2 class="title">{{ 'payment.complete.purchase' | translate }}</h2>
+    </div>
+  
+    <div class="payment-form">
       <form [formGroup]="paymentForm">
-          <div class="form-section">
-              <h3 class="section-title">
-                  <span class="icon">📍</span>
-                  Billing Information
-              </h3>
-              <div class="input-group">
-                  <label>Full Name</label>
-                  <input type="text" formControlName="fullName" />
-                  <span class="text-danger" *ngIf="paymentForm.get('fullName')?.touched || paymentForm.get('fullName')?.dirty">
-                    <span *ngIf="paymentForm.get('fullName')?.errors?.['required']">Please enter Full Name</span>
-                  </span>
-                  
-              </div>
-              <div class="input-group">
-                  <label>Email Address</label>
-                  <input type="email"  formControlName="emailAddress" />
-                  <span class="text-danger" *ngIf="paymentForm.get('emailAddress')?.touched || paymentForm.get('emailAddress')?.dirty">
-                    <span *ngIf="paymentForm.get('emailAddress')?.errors?.['required']">Please enter Email Id</span>
-                  </span>
-              </div>
-              <div class="input-group">
-                  <label>Street Address</label>
-                  <input type="text"  formControlName="streetAddress" />
-                  <span class="text-danger" *ngIf="paymentForm.get('streetAddress')?.touched || paymentForm.get('streetAddress')?.dirty">
-                    <span *ngIf="paymentForm.get('streetAddress')?.errors?.['required']">Please enter Street Address</span>
-                  </span>
-              </div>
-              <div class="row">
-                  <div class="input-group">
-                      <label>City</label>
-                      <input type="text" formControlName="city" />
-                      <span class="text-danger" *ngIf="paymentForm.get('city')?.touched || paymentForm.get('city')?.dirty">
-                        <span *ngIf="paymentForm.get('city')?.errors?.['required']">Please enter City</span>
-                      </span>
-                  </div>
-                  <div class="input-group">
-                      <label>ZIP Code</label>
-                      <input type="text" formControlName="zipCode" />
-                      <span class="text-danger" *ngIf="paymentForm.get('zipCode')?.touched || paymentForm.get('zipCode')?.dirty">
-                        <span *ngIf="paymentForm.get('zipCode')?.errors?.['required']">Please enter Zip Code</span>
-                      </span>
-                  </div>
-              </div>
+        <div class="form-section">
+          <h3 class="section-title">
+            <span class="icon">📍</span>
+            {{ 'payment.billing.info' | translate }}
+          </h3>
+  
+          <div class="input-group">
+            <label>{{ 'payment.full.name' | translate }}</label>
+            <input type="text" formControlName="fullName" />
+            <span class="text-danger" *ngIf="paymentForm.get('fullName')?.touched || paymentForm.get('fullName')?.dirty">
+              <span *ngIf="paymentForm.get('fullName')?.errors?.['required']">{{ 'payment.full.name.required' | translate }}</span>
+            </span>
           </div>
-
-          <div class="form-section">
-              <h3 class="section-title">
-                  <span class="icon">💳</span>
-                  Payment Method
-              </h3>
-             <!-- Update your template -->
-<div class="payment-methods">
-    <div class="method" 
-         [class.active]="selectedMethod === 'card'"
-         (click)="setValueforPM('card')">
-        <div class="radio"></div>
-        <div class="method-icon">💳</div>
-        <span>Card</span>
-    </div>
-    <div class="method"
-         [class.active]="selectedMethod === 'COD'"
-         (click)="setValueforPM('COD')">
-        <div class="radio"></div>
-        <div class="method-icon">📱</div>
-        <span>Cash on Delivery</span>
-    </div>
-</div>
-<ng-container *ngIf="selectedMethod != 'COD'">
+  
+          <div class="input-group">
+            <label>{{ 'payment.email' | translate }}</label>
+            <input type="email" formControlName="emailAddress" />
+            <span class="text-danger" *ngIf="paymentForm.get('emailAddress')?.touched || paymentForm.get('emailAddress')?.dirty">
+              <span *ngIf="paymentForm.get('emailAddress')?.errors?.['required']">{{ 'payment.email.required' | translate }}</span>
+            </span>
+          </div>
+  
+          <div class="input-group">
+            <label>{{ 'payment.street' | translate }}</label>
+            <input type="text" formControlName="streetAddress" />
+            <span class="text-danger" *ngIf="paymentForm.get('streetAddress')?.touched || paymentForm.get('streetAddress')?.dirty">
+              <span *ngIf="paymentForm.get('streetAddress')?.errors?.['required']">{{ 'payment.street.required' | translate }}</span>
+            </span>
+          </div>
+  
+          <div class="row">
+            <div class="input-group">
+              <label>{{ 'payment.city' | translate }}</label>
+              <input type="text" formControlName="city" />
+              <span class="text-danger" *ngIf="paymentForm.get('city')?.touched || paymentForm.get('city')?.dirty">
+                <span *ngIf="paymentForm.get('city')?.errors?.['required']">{{ 'payment.city.required' | translate }}</span>
+              </span>
+            </div>
+            <div class="input-group">
+              <label>{{ 'payment.zip' | translate }}</label>
+              <input type="text" formControlName="zipCode" />
+              <span class="text-danger" *ngIf="paymentForm.get('zipCode')?.touched || paymentForm.get('zipCode')?.dirty">
+                <span *ngIf="paymentForm.get('zipCode')?.errors?.['required']">{{ 'payment.zip.required' | translate }}</span>
+              </span>
+            </div>
+          </div>
+        </div>
+  
+        <div class="form-section">
+          <h3 class="section-title">
+            <span class="icon">💳</span>
+            {{ 'payment.payment.method' | translate }}
+          </h3>
+  
+          <div class="payment-methods">
+            <div class="method" [class.active]="selectedMethod === 'card'" (click)="setValueforPM('card')">
+              <div class="radio"></div>
+              <div class="method-icon">💳</div>
+              <span>{{ 'payment.card' | translate }}</span>
+            </div>
+            <div class="method" [class.active]="selectedMethod === 'COD'" (click)="setValueforPM('COD')">
+              <div class="radio"></div>
+              <div class="method-icon">📱</div>
+              <span>{{ 'payment.cod' | translate }}</span>
+            </div>
+          </div>
+  
+          <ng-container *ngIf="selectedMethod != 'COD'">
+            <div class="input-group">
+              <label>{{ 'payment.card.number' | translate }}</label>
+              <input type="text" formControlName="cardNumber" />
+              <span class="text-danger" *ngIf="paymentForm.get('cardNumber')?.touched || paymentForm.get('cardNumber')?.dirty">
+                <span *ngIf="paymentForm.get('cardNumber')?.errors?.['required']">{{ 'payment.card.number.required' | translate }}</span>
+              </span>
+            </div>
+  
+            <div class="input-group">
+              <label>{{ 'payment.card.holder' | translate }}</label>
+              <input type="text" formControlName="cardHolder" />
+              <span class="text-danger" *ngIf="paymentForm.get('cardHolder')?.touched || paymentForm.get('cardHolder')?.dirty">
+                <span *ngIf="paymentForm.get('cardHolder')?.errors?.['required']">{{ 'payment.card.holder.required' | translate }}</span>
+              </span>
+            </div>
+  
+            <div class="row">
               <div class="input-group">
-                  <label>Card Number</label>
-                  <input type="text"  formControlName="cardNumber" />
-                  <span class="text-danger" *ngIf="paymentForm.get('cardNumber')?.touched || paymentForm.get('cardNumber')?.dirty">
-                    <span *ngIf="paymentForm.get('cardNumber')?.errors?.['required']">Please enter Card Number</span>
-                  </span>
+                <label>{{ 'payment.expiry' | translate }}</label>
+                <input class="form-group" type="text" formControlName="expiryDate" />
+                <span class="text-danger" *ngIf="paymentForm.get('expiryDate')?.touched || paymentForm.get('expiryDate')?.dirty">
+                  <span *ngIf="paymentForm.get('expiryDate')?.errors?.['required']">{{ 'payment.expiry.required' | translate }}</span>
+                </span>
               </div>
               <div class="input-group">
-                  <label>Cardholder Name</label>
-                  <input type="text" formControlName="cardHolder" />
-                  <span class="text-danger" *ngIf="paymentForm.get('cardNumber')?.touched || paymentForm.get('cardNumber')?.dirty">
-                    <span *ngIf="paymentForm.get('cardNumber')?.errors?.['required']">Please enter Cardholder Name</span>
-                  </span>
+                <label>{{ 'payment.cvv' | translate }}</label>
+                <input type="text" formControlName="cvv" />
+                <span class="text-danger" *ngIf="paymentForm.get('cvv')?.touched || paymentForm.get('cvv')?.dirty">
+                  <span *ngIf="paymentForm.get('cvv')?.errors?.['required']">{{ 'payment.cvv.required' | translate }}</span>
+                  <span *ngIf="paymentForm.get('cvv')?.errors?.['maxlength']">{{ 'payment.cvv.maxlength' | translate }}</span>
+                  <span *ngIf="paymentForm.get('cvv')?.errors?.['pattern']">{{ 'payment.cvv.pattern' | translate }}</span>
+                </span>
               </div>
-              <div class="row">
-                  <div class="input-group">
-                      <label>Expiry Date</label>
-                      <input class="form-group" type="text" formControlName="expiryDate"  />
-                      <span class="text-danger" *ngIf="paymentForm.get('expiryDate')?.touched || paymentForm.get('expiryDate')?.dirty">
-                        <span *ngIf="paymentForm.get('expiryDate')?.errors?.['required']">Please enter Expiry Date</span>
-                      </span>
-                  </div>
-                  <div class="input-group">
-                      <label>CVV</label>
-                      <input type="text" formControlName="cvv"  />
-                      <span class="text-danger" *ngIf="paymentForm.get('cvv')?.touched || paymentForm.get('cvv')?.dirty">
-                        <span *ngIf="paymentForm.get('cvv')?.errors?.['required']">Please enter CVV</span>
-                        <span *ngIf="paymentForm.get('cvv')?.errors?.['maxlength']">Maximum 3 digits are allowed</span>
-                        <span *ngIf="paymentForm.get('cvv')?.errors?.['pattern']">Only numbers are allowed</span>
-
-                      </span>
-                  </div>
-              </div>
-            </ng-container>
+            </div>
+          </ng-container>
+        </div>
+  
+        <div class="order-summary">
+          <h3 class="section-title">
+            <span class="icon">📦</span>
+            {{ 'payment.order.summary' | translate }}
+          </h3>
+          <div class="summary-item">
+            <span>{{ 'payment.subtotal' | translate }}</span>
+            <span>{{ checkoutDetails?.subtotal | currency : 'INR' : true }}</span>
           </div>
-
-          <div class="order-summary">
-              <h3 class="section-title">
-                  <span class="icon">📦</span>
-                  Order Summary
-              </h3>
-              <div class="summary-item">
-                  <span>Subtotal</span>
-                  <span>{{checkoutDetails?.subtotal | currency : "INR" : true }}</span>
-              </div>
-              <div class="summary-item">
-                  <span>Shipping</span>
-                  <span>{{checkoutDetails?.shipping | currency : "INR" : true}}</span>
-              </div>
-              <div class="summary-item">
-                  <span>Tax</span>
-                  <span>{{checkoutDetails?.tax | currency : "INR" : true}}</span>
-              </div>
-              <div class="summary-total">
-                  <span>Total</span>
-                  <span>{{checkoutDetails?.totalAmount | currency : "INR" : true}}</span>
-              </div>
+          <div class="summary-item">
+            <span>{{ 'payment.shipping' | translate }}</span>
+            <span>{{ checkoutDetails?.shipping | currency : 'INR' : true }}</span>
           </div>
-
-          <div class="form-footer">
-              <button type="submit" class="pay-btn" (click)="submitPayment()">
-                  <span class="lock-icon">🔒</span>
-                  Pay Securely
-              </button>
-              <div class="secure-payment">
-                  <div class="shield-icon">🛡️</div>
-                  <span>All transactions are secure and encrypted</span>
-              </div>
+          <div class="summary-item">
+            <span>{{ 'payment.tax' | translate }}</span>
+            <span>{{ checkoutDetails?.tax | currency : 'INR' : true }}</span>
           </div>
+          <div class="summary-total">
+            <span>{{ 'payment.total' | translate }}</span>
+            <span>{{ checkoutDetails?.totalAmount | currency : 'INR' : true }}</span>
+          </div>
+        </div>
+  
+        <div class="form-footer">
+          <button type="submit" class="pay-btn" (click)="submitPayment()">
+            <span class="lock-icon">🔐</span>
+            {{ 'payment.pay.securely' | translate }}
+          </button>
+          <div class="secure-payment">
+            <div class="shield-icon">🛡️</div>
+            <span>{{ 'payment.transactions.secure' | translate }}</span>
+          </div>
+        </div>
       </form>
+    </div>
   </div>
-</div>
+  

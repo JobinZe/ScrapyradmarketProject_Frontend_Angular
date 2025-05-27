@@ -52,7 +52,7 @@ export class CheckoutPageComponent implements OnInit{
       this.paymentForm.get('cardHolder')?.setValidators([Validators.required])
       this.paymentForm.get('cardNumber')?.setValidators([Validators.required])
       this.paymentForm.get('expiryDate')?.setValidators([Validators.required])
-      this.paymentForm.get('cvv')?.setValidators([Validators.required,Validators.minLength(3)])
+      this.paymentForm.get('cvv')?.setValidators([Validators.required,Validators.maxLength(3)])
       this.paymentForm.get('cardHolder')?.updateValueAndValidity()
       this.paymentForm.get('cardNumber')?.updateValueAndValidity()
       this.paymentForm.get('expiryDate')?.updateValueAndValidity()

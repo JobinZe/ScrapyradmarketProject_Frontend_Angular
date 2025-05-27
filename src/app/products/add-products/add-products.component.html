@@ -1,43 +1,43 @@
 <div class="product-form-container">
   <div class="product-form-card">
-    <h2 class="form-title">{{isUpdatePage ? 'Update Product' : 'Add New Product'}}</h2>
+    <h2 class="form-title">{{isUpdatePage ? ('add.product.update.pdu' | translate) : ('add.product.add.pdu' | translate)}}</h2>
   
     <form [formGroup]="addProductForm" (ngSubmit)="isUpdatePage ? updateProduct() : onSubmit()" class="product-form">
       <!-- Product Name -->
       <div class="form-group">
-        <label class="form-label">Product Name</label>
+        <label class="form-label">{{'add.product.add.pdu' | translate}}</label>
         <input type="text" class="form-input" placeholder="Enter product name" formControlName="productName">
         <div class="validation-error" *ngIf="addProductForm.get('productName')?.touched || addProductForm.get('productName')?.dirty">
-          <span *ngIf="addProductForm.get('productName')?.errors?.['required']">Please enter Product Name</span>
+          <span *ngIf="addProductForm.get('productName')?.errors?.['required']">{{'add.product.add.pdu.name' | translate}}</span>
         </div>
       </div>
 
       <!-- Price -->
       <div class="form-group">
-        <label class="form-label">Price (₹)</label>
+        <label class="form-label">{{'add.product.price' | translate}}</label>
         <div class="input-with-icon">
           <span class="input-icon">₹</span>
           <input type="number" class="form-input" placeholder="Enter price" formControlName="price">
         </div>
         <div class="validation-error" *ngIf="addProductForm.get('price')?.touched || addProductForm.get('price')?.dirty">
-          <span *ngIf="addProductForm.get('price')?.errors?.['required']">Please enter Price</span>
-          <span *ngIf="addProductForm.get('price')?.errors?.['pattern']">Please enter numeric values</span>
+          <span *ngIf="addProductForm.get('price')?.errors?.['required']">{{'add.product.enter.price' | translate}}</span>
+          <span *ngIf="addProductForm.get('price')?.errors?.['pattern']">{{'add.product.enter.numeric' | translate}}</span>
         </div>
       </div>
 
       <!-- Category -->
       <div class="form-group">
-        <label class="form-label">Category</label>
+        <label class="form-label">{{'add.product.category' | translate}}</label>
         @if (category.length > 0) {
           <div class="select-wrapper">
             <select class="form-select" formControlName="categoryValues">
-              <option [value]="null" selected>Select Category</option>
+              <option [value]="null" selected>{{'add.product.select.category' | translate}}</option>
               @for(item of category; track item._id) {
                 <option [value]="item._id">{{item?.category}}</option>
               }
             </select>
             <div class="validation-error" *ngIf="addProductForm.get('categoryValues')?.touched || addProductForm.get('categoryValues')?.dirty">
-              <span *ngIf="addProductForm.get('categoryValues')?.errors?.['required']">Please select category</span>
+              <span *ngIf="addProductForm.get('categoryValues')?.errors?.['required']">{{'add.product.pls.select.cat' | translate}}</span>
             </div>
           </div>
         }
@@ -47,43 +47,43 @@
               <line x1="12" y1="5" x2="12" y2="19"></line>
               <line x1="5" y1="12" x2="19" y2="12"></line>
             </svg>
-            Add Category
+            {{'add.product.add.cat' | translate}}
           </button>
         }
       </div>
 
       <!-- Quantity -->
       <div class="form-group">
-        <label class="form-label">Quantity</label>
+        <label class="form-label"> {{'add.product.quantity' | translate}}</label>
         <input type="text" class="form-input" placeholder="Enter quantity" formControlName="quantity">
         <div class="validation-error" *ngIf="addProductForm.get('quantity')?.['touched'] || addProductForm.get('quantity')?.['dirty']">
-          <span *ngIf="addProductForm.get('quantity')?.errors?.['required']">Please enter Quantity</span>
-          <span *ngIf="addProductForm.get('quantity')?.errors?.['pattern']">Only numbers are allowed</span>
+          <span *ngIf="addProductForm.get('quantity')?.errors?.['required']">{{'add.product.enter.qty' | translate}}</span>
+          <span *ngIf="addProductForm.get('quantity')?.errors?.['pattern']">{{'add.product.only.num' | translate}}</span>
         </div>
       </div>
 
       <!-- Description -->
       <div class="form-group">
-        <label class="form-label">Description</label>
+        <label class="form-label">{{'add.product.desc' | translate}}</label>
         <textarea class="form-textarea" placeholder="Enter product description" formControlName="description"></textarea>
         <div class="validation-error" *ngIf="addProductForm.get('description')?.['touched'] || addProductForm.get('description')?.['dirty']">
-          <span *ngIf="addProductForm.get('description')?.errors?.['required']">Please enter Description</span>
+          <span *ngIf="addProductForm.get('description')?.errors?.['required']">{{'add.product.desc' | translate}}</span>
         </div>
       </div>
 
       <!-- File Upload -->
       <div class="form-group">
-        <label class="form-label">Upload Product File</label>
+        <label class="form-label">{{'add.product.upload.file' | translate}}</label>
         <div class="file-upload-container">
           <ng-container *ngIf="!isUpdatePage || (imageDeleted && isUpdatePage); else showUploadedFile">
             <label class="file-upload-label">
               <input type="file" class="form-control" (change)="uploadFile($event)" formControlName="image">
-              <span>Click to upload or drag and drop</span>
+              <span>{{'add.product.click.upload' | translate}}</span>
               <small>PDF, XLSX, PNG, JPEG (Max 5MB)</small>
             </label>
             <div class="validation-error" *ngIf="addProductForm.get('image')?.['touched'] || addProductForm.get('image')?.['dirty']">
-              <span *ngIf="addProductForm.get('image')?.errors?.['required']">Please upload file</span>
-              <span *ngIf="addProductForm.get('image')?.errors?.['invalidFileType'] && !addProductForm.get('image')?.errors?.['required']">Please upload PDF, XLSX, PNG, JPEG</span>
+              <span *ngIf="addProductForm.get('image')?.errors?.['required']">{{'add.product.pls.upload.file' | translate}}</span>
+              <span *ngIf="addProductForm.get('image')?.errors?.['invalidFileType'] && !addProductForm.get('image')?.errors?.['required']">{{'add.product.pls.upload' | translate}} PDF, XLSX, PNG, JPEG</span>
             </div>
           </ng-container>
           
@@ -109,7 +109,7 @@
 
       <!-- Submit Button -->
       <button type="submit" class="submit-btn" [disabled]="addProductForm.invalid">
-        {{isUpdatePage ? 'Update Product' : 'Add Product'}}
+        {{isUpdatePage ? ('add.product.update.pdu' | translate) : ('add.product.add.pdu' | translate)}}
       </button>
     </form>
   </div>
@@ -119,7 +119,7 @@
 <ng-template #categoryModal let-modal>
   <div class="modal-container">
     <div class="modal-header">
-      <h5 class="modal-title">Add New Category</h5>
+      <h5 class="modal-title">{{'add.product.add.new.cat' | translate}}</h5>
       <button type="button" class="modal-close-btn" (click)="modal.dismiss()">
         &times;
       </button>
@@ -127,17 +127,17 @@
     <div class="modal-body">
       <form [formGroup]="categoryForm">
         <div class="form-group">
-          <label class="form-label">Category Name</label>
+          <label class="form-label">{{'add.product.cat.name' | translate}}</label>
           <input type="text" class="form-input" formControlName="category" placeholder="Enter category name">
           <div class="validation-error" *ngIf="categoryForm.get('category')?.touched || categoryForm.get('category')?.dirty">
-            <span *ngIf="categoryForm.get('category')?.errors?.['required']">Please enter category</span>
+            <span *ngIf="categoryForm.get('category')?.errors?.['required']">{{'add.product.enter.cat' | translate}}</span>
           </div>
         </div>
       </form>
     </div>
     <div class="modal-footer">
-      <button class="modal-btn secondary" (click)="modal.dismiss()">Cancel</button>
-      <button class="modal-btn primary" (click)="addCategory()" [disabled]="categoryForm.invalid">Add Category</button>
+      <button class="modal-btn secondary" (click)="modal.dismiss()">{{'add.product.cancel' | translate}}</button>
+      <button class="modal-btn primary" (click)="addCategory()" [disabled]="categoryForm.invalid">{{'add.product.add.cat' | translate}}</button>
     </div>
   </div>
 </ng-template>
