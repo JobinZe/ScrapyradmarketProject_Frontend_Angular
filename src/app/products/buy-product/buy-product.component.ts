@@ -6,6 +6,8 @@ import { CartService } from '../services/cart-service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { fetchFileType } from '../services/file-validator';
 import { CheckoutService } from '../services/checkout-services';
+import { CartCountService } from '../../common/services/cart-count-services';
+import { UserRegistrationService } from '../../login/services/user-reg.services';
 interface CartItem {
   id: string;
   name: string;
@@ -24,14 +26,21 @@ interface CartItem {
 export class BuyProductComponent implements OnInit{
   product:any;
   cartItems:any[]=[]
+  cartItemCount:any
   @ViewChild('quantityField') quantityField:any
   constructor(private router:Router,
     private productService:ProductServices,
     private modalService:NgbModal,
     private cartService:CartService,
+    private cartCountService:CartCountService,
+    private authServices:UserRegistrationService,
     private checkoutService:CheckoutService){}
   ngOnInit(): void {
    this.getCartDetails()
+   this.authServices.getCartCountData().subscribe((response:any)=>{
+    this.cartItemCount = response.totalLength
+    this.cartCountService.setCartCount(this.cartItemCount)
+   })
   }
 
 

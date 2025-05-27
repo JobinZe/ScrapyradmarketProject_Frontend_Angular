@@ -4,6 +4,8 @@ import { Store } from '@ngrx/store';
 import { UserRegistrationService } from '../../login/services/user-reg.services';
 import { selectionSessionState } from '../../login/store/auth-selector';
 import { TranslateService } from '@ngx-translate/core';
+import { CartCountService } from '../services/cart-count-services';
+import { debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-after-login',
@@ -18,7 +20,7 @@ export class AfterLoginComponent {
   userSession:any;
   selectedLang:any = 'en';
 
-  constructor(private authServices:UserRegistrationService,private store:Store,private router:Router,private translate:TranslateService) {
+  constructor(private authServices:UserRegistrationService,private store:Store,private router:Router,private translate:TranslateService,public cartCountService:CartCountService) {
     this.store.select(selectionSessionState).subscribe((res)=>{
       if(typeof res == 'string'){
        this.userSession = JSON.parse(res)
@@ -33,8 +35,18 @@ export class AfterLoginComponent {
   ngOnInit() {
    this.authServices.getCartCountData().subscribe((response:any)=>{
     this.cartItemCount = response.totalLength
+    this.cartCountService.setCartCount(this.cartItemCount)
+    debounceTime(500);
+    this.fetchCartValue()
    })
    
+  
+  }
+  fetchCartValue(){
+    this.cartCountService.cartCount$.subscribe(response=>{
+      console.log(response,">>>cart count");
+      
+     })
   }
   setLang(lang:string){
     this.selectedLang = lang;
